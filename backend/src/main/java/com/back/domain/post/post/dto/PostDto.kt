@@ -3,7 +3,7 @@ package com.back.domain.post.post.dto
 import com.back.domain.post.post.entity.Post
 import java.time.LocalDateTime
 
-open class PostDto private constructor(
+open class PostDto protected constructor(
     val id: Int,
     val createDate: LocalDateTime,
     val modifyDate: LocalDateTime,
