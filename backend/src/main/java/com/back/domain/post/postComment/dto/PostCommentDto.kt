@@ -1,10 +1,8 @@
 package com.back.domain.post.postComment.dto
 
 import com.back.domain.post.postComment.entity.PostComment
-import lombok.Getter
 import java.time.LocalDateTime
 
-@Getter
 class PostCommentDto(postComment: PostComment) {
     val id: Int
     val createDate: LocalDateTime
