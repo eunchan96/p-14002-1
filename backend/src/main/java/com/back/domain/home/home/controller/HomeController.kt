@@ -21,8 +21,8 @@ class HomeController {
 
         return """
                 <h1>API 서버</h1>
-                <p>Host Name: ${localHost.getHostName()}</p>
-                <p>Host Address: ${localHost.getHostAddress()}</p>
+                <p>Host Name: ${localHost.hostName}</p>
+                <p>Host Address: ${localHost.hostAddress}</p>
                 <div>
                     <a href="/swagger-ui/index.html">API 문서로 이동</a>
                 </div>
@@ -33,7 +33,7 @@ class HomeController {
     @GetMapping("/session")
     @Operation(summary = "세션 확인")
     fun session(session: HttpSession): Map<String, Any> {
-        return Collections.list(session.getAttributeNames()).stream()
+        return Collections.list(session.attributeNames).stream()
             .collect(
                 Collectors.toMap(
                     Function { name: String? -> name },
