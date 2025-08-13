@@ -7,9 +7,6 @@ import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 import java.net.InetAddress
-import java.util.*
-import java.util.function.Function
-import java.util.stream.Collectors
 
 @RestController
 @Tag(name = "HomeController", description = "홈 컨트롤러")
@@ -20,24 +17,20 @@ class HomeController {
         val localHost = InetAddress.getLocalHost()
 
         return """
-                <h1>API 서버</h1>
-                <p>Host Name: ${localHost.hostName}</p>
-                <p>Host Address: ${localHost.hostAddress}</p>
-                <div>
-                    <a href="/swagger-ui/index.html">API 문서로 이동</a>
-                </div>
-                
-                """.trimIndent()
+            |<h1>API 서버</h1>
+            |<p>Host Name: ${localHost.hostName}</p>
+            |<p>Host Address: ${localHost.hostAddress}</p>
+            |<div>
+            |    <a href="/swagger-ui/index.html">API 문서로 이동</a>
+            |</div>
+        """.trimMargin()
     }
 
     @GetMapping("/session")
     @Operation(summary = "세션 확인")
     fun session(session: HttpSession): Map<String, Any> {
-        return Collections.list(session.attributeNames).stream()
-            .collect(
-                Collectors.toMap(
-                    Function { name: String? -> name },
-                    Function { s: String? -> session.getAttribute(s) }
-                ))
+        return session.attributeNames
+            .asSequence()
+            .associateWith { name -> session.getAttribute(name) }
     }
 }
