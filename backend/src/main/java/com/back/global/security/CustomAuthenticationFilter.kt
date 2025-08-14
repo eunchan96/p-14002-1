@@ -28,7 +28,7 @@ class CustomAuthenticationFilter(
         filterChain: FilterChain
     ) {
         try {
-            work(request, response, filterChain)
+            processRequest(request, response, filterChain)
         } catch (e: ServiceException) {
             val rsData: RsData<Void> = e.rsData
             response.contentType = "application/json; charset=utf-8"
@@ -39,7 +39,7 @@ class CustomAuthenticationFilter(
         }
     }
 
-    private fun work(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
+    private fun processRequest(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
         // API 요청이 아니라면 패스
         if (!request.requestURI.startsWith("/api/")) {
             filterChain.doFilter(request, response)
@@ -52,26 +52,7 @@ class CustomAuthenticationFilter(
             return
         }
 
-        val apiKey: String
-        val accessToken: String
-
-        val headerAuthorization = rq.getHeader("Authorization", "")
-
-        if (headerAuthorization.isNotBlank()) {
-            if (!headerAuthorization.startsWith("Bearer ")) throw ServiceException(
-                "401-2",
-                "Authorization 헤더가 Bearer 형식이 아닙니다."
-            )
-
-            val headerAuthorizationBits = headerAuthorization.split(' ', limit = 3)
-
-            apiKey = headerAuthorizationBits[1]
-            accessToken = if (headerAuthorizationBits.size == 3) headerAuthorizationBits[2] else ""
-        } else {
-            apiKey = rq.getCookieValue("apiKey", "")
-            accessToken = rq.getCookieValue("accessToken", "")
-        }
-
+        val (apiKey, accessToken) = extractTokens()
         logger.debug("apiKey : $apiKey")
         logger.debug("accessToken : $accessToken")
 
@@ -83,26 +64,7 @@ class CustomAuthenticationFilter(
             return
         }
 
-        var member: Member? = null
-        var isAccessTokenValid = false
-
-        if (isAccessTokenExists) {
-            val payload = memberService.payload(accessToken)
-
-            if (payload != null) {
-                val id = payload["id"] as Int
-                val username = payload["username"] as String?
-                val name = payload["name"] as String?
-                member = Member(id, username, name)
-
-                isAccessTokenValid = true
-            }
-        }
-
-        if (member == null) {
-            member = memberService.findByApiKey(apiKey)
-                .orElseThrow { ServiceException("401-3", "API 키가 유효하지 않습니다.") }
-        }
+        val (member, isAccessTokenValid) = getAuthenticatedMember(apiKey, accessToken)
 
         if (isAccessTokenExists && !isAccessTokenValid) {
             val actorAccessToken = memberService.genAccessToken(member)
@@ -130,5 +92,42 @@ class CustomAuthenticationFilter(
             .getContext().authentication = authentication
 
         filterChain.doFilter(request, response)
+    }
+
+    private fun extractTokens(): Pair<String, String> {
+        val headerAuthorization = rq.getHeader("Authorization", "")
+
+        return if (headerAuthorization.isNotBlank()) {
+            require(headerAuthorization.startsWith("Bearer ")) {
+                throw ServiceException("401-1", "Authorization 헤더가 Bearer 형식이 아닙니다.")
+            }
+
+            val headerAuthorBits = headerAuthorization.split(' ', limit = 3)
+            val apiKey = headerAuthorBits[1]
+            val accessToken = headerAuthorBits.getOrElse(2) { "" }
+            apiKey to accessToken
+        } else {
+            val apiKey = rq.getCookieValue("apiKey", "")
+            val accessToken = rq.getCookieValue("accessToken", "")
+            apiKey to accessToken
+        }
+    }
+
+    private fun getAuthenticatedMember(apiKey: String, accessToken: String): Pair<Member, Boolean> {
+        var isAccessTokenValid = false
+
+        val memberFromToken = if (accessToken.isNotBlank()) {
+            memberService.payload(accessToken)?.let { payload ->
+                val id = payload["id"] as Int
+                val username = payload["username"] as String?
+                val name = payload["name"] as String?
+                Member(id, username, name).also { isAccessTokenValid = true }
+            }
+        } else null
+
+        val member = memberFromToken ?: memberService.findByApiKey(apiKey)
+            .orElseThrow { ServiceException("401-3", "API 키가 유효하지 않습니다.") }
+
+        return member to isAccessTokenValid
     }
 }
