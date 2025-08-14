@@ -78,7 +78,7 @@ public class ApiV1PostCommentControllerTest {
                 .andDo(print());
 
         Post post = postService.findById(postId).get();
-        List<PostComment> comments = post.getComments();
+        List<PostComment> comments = post.comments;
 
         resultActions
                 .andExpect(handler().handlerType(ApiV1PostCommentController.class))
@@ -224,7 +224,7 @@ public class ApiV1PostCommentControllerTest {
 
         Post post = postService.findById(postId).get();
 
-        PostComment postComment = post.getComments().getLast();
+        PostComment postComment = post.comments.getLast();
 
         resultActions
                 .andExpect(handler().handlerType(ApiV1PostCommentController.class))
