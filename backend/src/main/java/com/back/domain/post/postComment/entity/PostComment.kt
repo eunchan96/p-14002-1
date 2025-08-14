@@ -9,9 +9,9 @@ import jakarta.persistence.ManyToOne
 
 @Entity
 class PostComment(
-    @field:ManyToOne var author: Member,
-    @field:ManyToOne var post: Post,
-    var content: String
+    @JvmField @field:ManyToOne var author: Member,
+    @JvmField @field:ManyToOne var post: Post,
+    @JvmField var content: String
 ) : BaseEntity() {
     fun modify(content: String) {
         this.content = content
