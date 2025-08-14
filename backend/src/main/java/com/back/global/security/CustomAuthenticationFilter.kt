@@ -15,13 +15,13 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
-import java.util.function.Supplier
 
 @Component
 class CustomAuthenticationFilter(
     private val memberService: MemberService,
     private val rq: Rq
 ) : OncePerRequestFilter() {
+
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
@@ -47,10 +47,7 @@ class CustomAuthenticationFilter(
         }
 
         // 인증, 인가가 필요없는 API 요청이라면 패스
-        if (mutableListOf("/api/v1/members/login", "/api/v1/members/logout", "/api/v1/members/join").contains(
-                request.requestURI
-            )
-        ) {
+        if (request.requestURI in listOf("/api/v1/members/login", "/api/v1/members/logout", "/api/v1/members/join")) {
             filterChain.doFilter(request, response)
             return
         }
@@ -60,7 +57,7 @@ class CustomAuthenticationFilter(
 
         val headerAuthorization = rq.getHeader("Authorization", "")
 
-        if (!headerAuthorization.isBlank()) {
+        if (headerAuthorization.isNotBlank()) {
             if (!headerAuthorization.startsWith("Bearer ")) throw ServiceException(
                 "401-2",
                 "Authorization 헤더가 Bearer 형식이 아닙니다."
@@ -75,11 +72,11 @@ class CustomAuthenticationFilter(
             accessToken = rq.getCookieValue("accessToken", "")
         }
 
-        logger.debug("apiKey : ${apiKey}")
-        logger.debug("accessToken : ${accessToken}")
+        logger.debug("apiKey : $apiKey")
+        logger.debug("accessToken : $accessToken")
 
-        val isApiKeyExists = !apiKey.isBlank()
-        val isAccessTokenExists = !accessToken.isBlank()
+        val isApiKeyExists = apiKey.isNotBlank()
+        val isAccessTokenExists = accessToken.isNotBlank()
 
         if (!isApiKeyExists && !isAccessTokenExists) {
             filterChain.doFilter(request, response)
@@ -103,9 +100,8 @@ class CustomAuthenticationFilter(
         }
 
         if (member == null) {
-            member = memberService
-                .findByApiKey(apiKey)
-                .orElseThrow(Supplier { ServiceException("401-3", "API 키가 유효하지 않습니다.") })
+            member = memberService.findByApiKey(apiKey)
+                .orElseThrow { ServiceException("401-3", "API 키가 유효하지 않습니다.") }
         }
 
         if (isAccessTokenExists && !isAccessTokenValid) {
