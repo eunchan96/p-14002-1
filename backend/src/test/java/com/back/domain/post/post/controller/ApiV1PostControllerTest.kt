@@ -64,11 +64,11 @@ class ApiV1PostControllerTest {
             .andExpect(MockMvcResultMatchers.jsonPath("$.data.id").value(post.id))
             .andExpect(
                 MockMvcResultMatchers.jsonPath("$.data.createDate")
-                    .value<String?>(Matchers.startsWith(post.createDate.toString().substring(0, 20)))
+                    .value(Matchers.startsWith(post.createDate.toString().substring(0, 20)))
             )
             .andExpect(
                 MockMvcResultMatchers.jsonPath("$.data.modifyDate")
-                    .value<String?>(Matchers.startsWith(post.modifyDate.toString().substring(0, 20)))
+                    .value(Matchers.startsWith(post.modifyDate.toString().substring(0, 20)))
             )
             .andExpect(MockMvcResultMatchers.jsonPath("$.data.authorId").value(post.author.id))
             .andExpect(MockMvcResultMatchers.jsonPath("$.data.authorName").value(post.author.nickname))
@@ -429,11 +429,11 @@ class ApiV1PostControllerTest {
             .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(post.id))
             .andExpect(
                 MockMvcResultMatchers.jsonPath("$.createDate")
-                    .value<String?>(Matchers.startsWith(post.createDate.toString().substring(0, 20)))
+                    .value(Matchers.startsWith(post.createDate.toString().substring(0, 20)))
             )
             .andExpect(
                 MockMvcResultMatchers.jsonPath("$.modifyDate")
-                    .value<String?>(Matchers.startsWith(post.modifyDate.toString().substring(0, 20)))
+                    .value(Matchers.startsWith(post.modifyDate.toString().substring(0, 20)))
             )
             .andExpect(MockMvcResultMatchers.jsonPath("$.authorId").value(post.author.id))
             .andExpect(MockMvcResultMatchers.jsonPath("$.authorName").value(post.author.nickname))
@@ -486,11 +486,11 @@ class ApiV1PostControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[$i].id").value(post.id))
                 .andExpect(
                     MockMvcResultMatchers.jsonPath("$[$i].createDate")
-                        .value<String?>(Matchers.startsWith(post.createDate.toString().substring(0, 20)))
+                        .value(Matchers.startsWith(post.createDate.toString().substring(0, 20)))
                 )
                 .andExpect(
                     MockMvcResultMatchers.jsonPath("$[$i].modifyDate")
-                        .value<String?>(Matchers.startsWith(post.modifyDate.toString().substring(0, 20)))
+                        .value(Matchers.startsWith(post.modifyDate.toString().substring(0, 20)))
                 )
                 .andExpect(MockMvcResultMatchers.jsonPath("$[$i].authorId").value(post.author.id))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[$i].authorName").value(post.author.nickname))
