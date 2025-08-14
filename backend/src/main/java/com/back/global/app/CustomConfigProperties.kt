@@ -7,9 +7,9 @@ class CustomConfigProperties (
     val notProdMembers: List<NotProdMember>
 )  {
     data class NotProdMember(
-        val username: String,
-        val apiKey: String,
-        val nickname: String,
-        val profileImgUrl: String
+        @JvmField val username: String,
+        @JvmField val apiKey: String,
+        @JvmField val nickname: String,
+        @JvmField val profileImgUrl: String
     )
 }
