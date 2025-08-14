@@ -119,8 +119,8 @@ class CustomAuthenticationFilter(
         val memberFromToken = if (accessToken.isNotBlank()) {
             memberService.payload(accessToken)?.let { payload ->
                 val id = payload["id"] as Int
-                val username = payload["username"] as String?
-                val name = payload["name"] as String?
+                val username = payload["username"] as String
+                val name = payload["name"] as String
                 Member(id, username, name).also { isAccessTokenValid = true }
             }
         } else null
