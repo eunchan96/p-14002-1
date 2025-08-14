@@ -14,9 +14,9 @@ import java.util.*
 
 @Entity
 class Post(
-    @JvmField @field:ManyToOne(fetch = LAZY) var author: Member,
-    @JvmField var title: String,
-    @JvmField var content: String
+    @field:ManyToOne(fetch = LAZY) var author: Member,
+    var title: String,
+    var content: String
 ) : BaseEntity() {
     @JvmField
     @OneToMany(
