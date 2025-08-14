@@ -72,7 +72,7 @@ class CustomOAuth2UserService(
         return SecurityUser(
             member.id,
             member.username,
-            member.password,
+            member.password ?: "",
             member.name,
             member.authorities
         )

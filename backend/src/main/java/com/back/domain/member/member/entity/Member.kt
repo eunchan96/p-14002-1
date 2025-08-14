@@ -11,7 +11,7 @@ import java.util.*
 class Member(
     id: Int,
     @field:Column(unique = true) var username: String,
-    var password: String,
+    var password: String? = null,
     var nickname: String,
     @field:Column(unique = true) var apiKey: String,
     var profileImgUrl: String?
@@ -20,7 +20,7 @@ class Member(
         id, username, "", nickname, "", null
     )
 
-    constructor(username: String, password: String, nickname: String, profileImgUrl: String?) : this (
+    constructor(username: String, password: String?, nickname: String, profileImgUrl: String?) : this (
         0, username, password, nickname, UUID.randomUUID().toString(), profileImgUrl
     )
 

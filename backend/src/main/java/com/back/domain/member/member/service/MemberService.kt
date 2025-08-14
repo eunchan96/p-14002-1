@@ -20,7 +20,7 @@ class MemberService(
     }
 
     @JvmOverloads
-    fun join(username: String, password: String, nickname: String, profileImgUrl: String? = null): Member {
+    fun join(username: String, password: String?, nickname: String, profileImgUrl: String? = null): Member {
         memberRepository
             .findByUsername(username)
             .ifPresent {
@@ -29,7 +29,7 @@ class MemberService(
 
         val member = Member(
             username,
-            if (password.isNotBlank()) passwordEncoder.encode(password) else "",
+            password?.takeIf { it.isNotBlank() }?.let { passwordEncoder.encode(it) },
             nickname,
             profileImgUrl
         )
