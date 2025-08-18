@@ -4,17 +4,12 @@ import com.back.domain.member.member.dto.MemberWithUsernameDto
 import com.back.domain.member.member.service.MemberService
 import com.back.standard.extensions.getOrThrow
 import com.back.standard.page.dto.PageDto
+import com.back.standard.search.MemberSearchKeywordType
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.springframework.data.domain.Pageable
-import org.springframework.data.domain.Sort
-import org.springframework.data.web.PageableDefault
 import org.springframework.transaction.annotation.Transactional
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 
 @RestController
@@ -28,9 +23,12 @@ class ApiV1AdmMemberController(
     @Transactional(readOnly = true)
     @GetMapping
     fun items(
-        @PageableDefault(size = 30, page = 0, sort = ["id"], direction = Sort.Direction.ASC) pageable: Pageable
+        @RequestParam(defaultValue = "username") keywordType: MemberSearchKeywordType,
+        @RequestParam(defaultValue = "") keyword: String,
+        @RequestParam(defaultValue = "1") page: Int,
+        @RequestParam(defaultValue = "10") pageSize: Int
     ): PageDto<MemberWithUsernameDto> {
-        val members = memberService.findByListedPage(pageable)
+        val members = memberService.findBySearchPaged(keywordType, keyword, page, pageSize)
 
         return PageDto(members.map { MemberWithUsernameDto(it) })
     }

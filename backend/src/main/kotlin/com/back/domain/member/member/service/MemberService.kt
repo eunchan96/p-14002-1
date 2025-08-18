@@ -4,8 +4,11 @@ import com.back.domain.member.member.entity.Member
 import com.back.domain.member.member.repository.MemberRepository
 import com.back.global.exception.ServiceException
 import com.back.global.rsData.RsData
+import com.back.standard.search.MemberSearchKeywordType
+import com.back.standard.search.MemberSearchKeywordType.username
 import org.springframework.data.domain.Page
-import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
@@ -66,5 +69,8 @@ class MemberService(
 
     private fun modify(member: Member, nickname: String, profileImgUrl: String) = member.modify(nickname, profileImgUrl)
 
-    fun findByListedPage(pageable: Pageable): Page<Member> = memberRepository.findAll(pageable)
+    fun findBySearchPaged(keywordType: MemberSearchKeywordType = username, keyword: String = "", page: Int = 1, pageSize: Int = 10): Page<Member> {
+        val pageable = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Order.desc("id")))
+        return memberRepository.findByKeyword(keywordType, keyword, pageable)
+    }
 }
