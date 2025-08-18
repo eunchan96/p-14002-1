@@ -8,6 +8,7 @@ import com.back.global.rq.Rq
 import com.back.global.rsData.RsData
 import com.back.standard.extensions.getOrThrow
 import com.back.standard.page.dto.PageDto
+import com.back.standard.search.PostSearchKeywordType
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -33,9 +34,11 @@ class ApiV1PostController(
     @Operation(summary = "다건 조회")
     @Transactional(readOnly = true)
     fun items(
+        @RequestParam(defaultValue = "title") keywordType: PostSearchKeywordType,
+        @RequestParam(defaultValue = "") keyword: String,
         @PageableDefault(size = 30, page = 0, sort = ["id"], direction = Sort.Direction.ASC) pageable: Pageable
     ): PageDto<PostDto> {
-        val posts: Page<Post> = postService.findByListedPage(pageable)
+        val posts: Page<Post> = postService.findBySearchPaged(keywordType, keyword, pageable)
 
         return PageDto(posts.map { PostDto(it) })
     }

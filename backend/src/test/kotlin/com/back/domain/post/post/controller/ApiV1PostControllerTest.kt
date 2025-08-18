@@ -473,7 +473,7 @@ class ApiV1PostControllerTest {
             .andDo(MockMvcResultHandlers.print())
 
         val pageable = PageRequest.of(0, 30)
-        val postsPage = postService.findByListedPage(pageable)
+        val postsPage = postService.findBySearchPaged(pageable = pageable)
 
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostController::class.java))
