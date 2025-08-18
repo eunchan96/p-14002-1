@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.data.domain.PageRequest
 import org.springframework.http.MediaType
 import org.springframework.security.test.context.support.WithUserDetails
 import org.springframework.test.context.ActiveProfiles
@@ -470,29 +471,37 @@ class ApiV1PostControllerTest {
             )
             .andDo(MockMvcResultHandlers.print())
 
-        val posts = postService.findAll()
+        val pageable = PageRequest.of(0, 30)
+        val postsPage = postService.findByListedPage(pageable)
 
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("items"))
             .andExpect(MockMvcResultMatchers.status().isOk())
-            .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(posts.size))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.totalElements").value(postsPage.totalElements))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.totalPages").value(postsPage.totalPages))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.pageNumber").value(0))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.pageSize").value(30))
+
+        val posts = postsPage.content
+        resultActions
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content.length()").value(posts.size))
 
         for (i in posts.indices) {
             val post = posts[i]
             resultActions
-                .andExpect(MockMvcResultMatchers.jsonPath("$[$i].id").value(post.id))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].id").value(post.id))
                 .andExpect(
-                    MockMvcResultMatchers.jsonPath("$[$i].createDate")
+                    MockMvcResultMatchers.jsonPath("$.content[$i].createDate")
                         .value(Matchers.startsWith(post.createDate.toString().substring(0, 20)))
                 )
                 .andExpect(
-                    MockMvcResultMatchers.jsonPath("$[$i].modifyDate")
+                    MockMvcResultMatchers.jsonPath("$.content[$i].modifyDate")
                         .value(Matchers.startsWith(post.modifyDate.toString().substring(0, 20)))
                 )
-                .andExpect(MockMvcResultMatchers.jsonPath("$[$i].authorId").value(post.author.id))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[$i].authorName").value(post.author.nickname))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[$i].title").value(post.title))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].authorId").value(post.author.id))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].authorName").value(post.author.nickname))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].title").value(post.title))
         }
     }
 }
