@@ -8,7 +8,6 @@ data class RsData<T>(
     val msg: String,
     val data: T
 ) {
-    @JvmOverloads
     constructor(resultCode: String, msg: String, data: T = null as T) : this(
         resultCode,
         resultCode.split("-", limit = 2)[0].toInt(),

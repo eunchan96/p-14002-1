@@ -18,7 +18,6 @@ class MemberService(
 ) {
     fun count(): Long = memberRepository.count()
 
-    @JvmOverloads
     fun join(username: String, password: String?, nickname: String, profileImgUrl: String? = null): Member {
         memberRepository
             .findByUsername(username)?.let {
