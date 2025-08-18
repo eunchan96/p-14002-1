@@ -23,43 +23,23 @@ class PostService(
         return postRepository.save(post)
     }
 
-    fun findById(id: Int): Optional<Post> {
-        return postRepository.findById(id)
-    }
+    fun findById(id: Int): Optional<Post> = postRepository.findById(id)
 
-    fun findAll(): List<Post> {
-        return postRepository.findAll()
-    }
+    fun findAll(): List<Post> = postRepository.findAll()
 
-    fun modify(post: Post, title: String, content: String) {
-        post.modify(title, content)
-    }
+    fun modify(post: Post, title: String, content: String) = post.modify(title, content)
 
-    fun writeComment(author: Member, post: Post, content: String): PostComment {
-        return post.addComment(author, content)
-    }
+    fun writeComment(author: Member, post: Post, content: String): PostComment = post.addComment(author, content)
 
-    fun deleteComment(post: Post, postComment: PostComment): Boolean {
-        return post.deleteComment(postComment)
-    }
+    fun deleteComment(post: Post, postComment: PostComment): Boolean = post.deleteComment(postComment)
 
-    fun modifyComment(postComment: PostComment, content: String) {
-        postComment.modify(content)
-    }
+    fun modifyComment(postComment: PostComment, content: String) = postComment.modify(content)
 
-    fun delete(post: Post) {
-        postRepository.delete(post)
-    }
+    fun delete(post: Post) = postRepository.delete(post)
 
-    fun findLatest(): Post? {
-        return postRepository.findFirstByOrderByIdDesc()
-    }
+    fun findLatest(): Post? = postRepository.findFirstByOrderByIdDesc()
 
-    fun flush() {
-        postRepository.flush()
-    }
+    fun flush() = postRepository.flush()
 
-    fun findByListedPage(pageable: Pageable): Page<Post> {
-        return postRepository.findAll(pageable)
-    }
+    fun findByListedPage(pageable: Pageable): Page<Post> = postRepository.findAll(pageable)
 }
