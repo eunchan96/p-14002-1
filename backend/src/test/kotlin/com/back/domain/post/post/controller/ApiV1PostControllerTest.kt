@@ -3,6 +3,7 @@ package com.back.domain.post.post.controller
 import com.back.domain.member.member.service.MemberService
 import com.back.domain.post.post.service.PostService
 import com.back.standard.extensions.getOrThrow
+import com.back.standard.search.PostSearchKeywordType
 import jakarta.servlet.http.Cookie
 import org.hamcrest.Matchers
 import org.junit.jupiter.api.DisplayName
@@ -473,18 +474,18 @@ class ApiV1PostControllerTest {
             .andDo(MockMvcResultHandlers.print())
 
         val pageable = PageRequest.of(0, 30)
-        val postsPage = postService.findBySearchPaged(pageable = pageable)
+        val postPage = postService.findBySearchPaged(pageable = pageable)
 
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("items"))
             .andExpect(MockMvcResultMatchers.status().isOk())
-            .andExpect(MockMvcResultMatchers.jsonPath("$.totalItems").value(postsPage.totalElements))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.totalPages").value(postsPage.totalPages))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.totalItems").value(postPage.totalElements))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.totalPages").value(postPage.totalPages))
             .andExpect(MockMvcResultMatchers.jsonPath("$.currentPageNumber").value(1))
             .andExpect(MockMvcResultMatchers.jsonPath("$.pageSize").value(30))
 
-        val posts = postsPage.content
+        val posts = postPage.content
         resultActions
             .andExpect(MockMvcResultMatchers.jsonPath("$.items.length()").value(posts.size))
 
@@ -502,6 +503,90 @@ class ApiV1PostControllerTest {
                 )
                 .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].authorId").value(post.author.id))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].authorName").value(post.author.nickname))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].title").value(post.title))
+        }
+    }
+
+    @Test
+    @DisplayName("다건 조회 with keyword=축구")
+    fun t18() {
+        val resultActions = mvc
+            .perform(
+                MockMvcRequestBuilders.get("/api/v1/posts?page=0&size=3&keyword=축구")
+            )
+            .andDo(MockMvcResultHandlers.print())
+
+        val pageable = PageRequest.of(0, 3)
+        val postPage = postService
+            .findBySearchPaged(PostSearchKeywordType.title, "축구", pageable)
+
+        resultActions
+            .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostController::class.java))
+            .andExpect(MockMvcResultMatchers.handler().methodName("items"))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.totalItems").value(postPage.totalElements))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.totalPages").value(postPage.totalPages))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.currentPageNumber").value(1))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageSize").value(3))
+
+        val posts = postPage.content
+
+        for (i in posts.indices) {
+            val post = posts[i]
+            resultActions
+                .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].id").value(post.id))
+                .andExpect(
+                    MockMvcResultMatchers.jsonPath("$.items[$i].createDate")
+                        .value(Matchers.startsWith(post.createDate.toString().substring(0, 20)))
+                )
+                .andExpect(
+                    MockMvcResultMatchers.jsonPath("$.items[$i].modifyDate")
+                        .value(Matchers.startsWith(post.modifyDate.toString().substring(0, 20)))
+                )
+                .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].authorId").value(post.author.id))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].authorName").value(post.author.nickname))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].title").value(post.title))
+        }
+    }
+
+    @Test
+    @DisplayName("다건 조회 with keywordType=content&keyword=18명")
+    fun t19() {
+        val resultActions = mvc
+            .perform(
+                MockMvcRequestBuilders.get("/api/v1/posts?page=0&size=3&keywordType=content&keyword=18명")
+            )
+            .andDo(MockMvcResultHandlers.print())
+
+        val pageable = PageRequest.of(0, 3)
+        val postPage = postService
+            .findBySearchPaged(PostSearchKeywordType.content, "18명", pageable)
+
+        resultActions
+            .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostController::class.java))
+            .andExpect(MockMvcResultMatchers.handler().methodName("items"))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.totalItems").value(postPage.totalElements))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.totalPages").value(postPage.totalPages))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.currentPageNumber").value(1))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageSize").value(3))
+
+        val posts = postPage.content
+
+        for (i in posts.indices) {
+            val post = posts[i]
+            resultActions
+                .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].id").value(post.id))
+                .andExpect(
+                    MockMvcResultMatchers.jsonPath("$.items[$i].createDate")
+                        .value(Matchers.startsWith(post.createDate.toString().substring(0, 20)))
+                )
+                .andExpect(
+                    MockMvcResultMatchers.jsonPath("$.items[$i].modifyDate")
+                        .value(Matchers.startsWith(post.modifyDate.toString().substring(0, 20)))
+                )
+                .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].authorId").value(post.author.id))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].authorName").value(post.author.name))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].title").value(post.title))
         }
     }
