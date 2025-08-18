@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.data.domain.PageRequest
 import org.springframework.http.MediaType
 import org.springframework.security.test.context.support.WithUserDetails
 import org.springframework.test.context.ActiveProfiles
@@ -473,8 +472,7 @@ class ApiV1PostControllerTest {
             )
             .andDo(MockMvcResultHandlers.print())
 
-        val pageable = PageRequest.of(0, 30)
-        val postPage = postService.findBySearchPaged(pageable = pageable)
+        val postPage = postService.findBySearchPaged()
 
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostController::class.java))
@@ -512,13 +510,12 @@ class ApiV1PostControllerTest {
     fun t18() {
         val resultActions = mvc
             .perform(
-                MockMvcRequestBuilders.get("/api/v1/posts?page=0&size=3&keyword=축구")
+                MockMvcRequestBuilders.get("/api/v1/posts?page=1&pageSize=3&keyword=축구")
             )
             .andDo(MockMvcResultHandlers.print())
 
-        val pageable = PageRequest.of(0, 3)
         val postPage = postService
-            .findBySearchPaged(PostSearchKeywordType.title, "축구", pageable)
+            .findBySearchPaged(PostSearchKeywordType.title, "축구", 1, 3)
 
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostController::class.java))
@@ -554,13 +551,12 @@ class ApiV1PostControllerTest {
     fun t19() {
         val resultActions = mvc
             .perform(
-                MockMvcRequestBuilders.get("/api/v1/posts?page=0&size=3&keywordType=content&keyword=18명")
+                MockMvcRequestBuilders.get("/api/v1/posts?page=1&pageSize=3&keywordType=content&keyword=18명")
             )
             .andDo(MockMvcResultHandlers.print())
 
-        val pageable = PageRequest.of(0, 3)
         val postPage = postService
-            .findBySearchPaged(PostSearchKeywordType.content, "18명", pageable)
+            .findBySearchPaged(PostSearchKeywordType.content, "18명", 1, 3)
 
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostController::class.java))

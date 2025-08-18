@@ -7,7 +7,8 @@ import com.back.domain.post.postComment.entity.PostComment
 import com.back.standard.search.PostSearchKeywordType
 import com.back.standard.search.PostSearchKeywordType.title
 import org.springframework.data.domain.Page
-import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 
 @Service
@@ -42,6 +43,8 @@ class PostService(
 
     fun flush() = postRepository.flush()
 
-    fun findBySearchPaged(keywordType: PostSearchKeywordType = title, keyword: String = "", pageable: Pageable): Page<Post> =
-        postRepository.findByKeyword(keywordType, keyword, pageable)
+    fun findBySearchPaged(keywordType: PostSearchKeywordType = title, keyword: String = "", page: Int = 1, pageSize: Int = 30): Page<Post> {
+        val pageable = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Order.desc("id")))
+        return postRepository.findByKeyword(keywordType, keyword, pageable)
+    }
 }

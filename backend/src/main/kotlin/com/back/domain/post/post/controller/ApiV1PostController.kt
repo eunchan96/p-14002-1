@@ -36,9 +36,10 @@ class ApiV1PostController(
     fun items(
         @RequestParam(defaultValue = "title") keywordType: PostSearchKeywordType,
         @RequestParam(defaultValue = "") keyword: String,
-        @PageableDefault(size = 30, page = 0, sort = ["id"], direction = Sort.Direction.ASC) pageable: Pageable
+        @RequestParam(defaultValue = "1") page: Int,
+        @RequestParam(defaultValue = "30") pageSize: Int
     ): PageDto<PostDto> {
-        val posts: Page<Post> = postService.findBySearchPaged(keywordType, keyword, pageable)
+        val posts: Page<Post> = postService.findBySearchPaged(keywordType, keyword, page, pageSize)
 
         return PageDto(posts.map { PostDto(it) })
     }
