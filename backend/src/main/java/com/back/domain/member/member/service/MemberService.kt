@@ -43,7 +43,7 @@ class MemberService(
 
     fun payload(accessToken: String): Map<String, Any>? = authTokenService.payload(accessToken)
 
-    fun findById(id: Int): Member? = memberRepository.findNullableById(id)
+    fun findById(id: Int): Member? = memberRepository.findById(id).orElse(null)
 
     fun findAll(): List<Member> = memberRepository.findAll()
 

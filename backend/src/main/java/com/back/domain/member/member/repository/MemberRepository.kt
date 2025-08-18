@@ -4,8 +4,6 @@ import com.back.domain.member.member.entity.Member
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface MemberRepository : JpaRepository<Member, Int> {
-    fun findNullableById(id: Int): Member?
-
     fun findByUsername(username: String): Member?
 
     fun findByApiKey(apiKey: String): Member?

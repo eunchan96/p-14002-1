@@ -22,7 +22,7 @@ class PostService(
         return postRepository.save(post)
     }
 
-    fun findById(id: Int): Post? = postRepository.findNullableById(id)
+    fun findById(id: Int): Post? = postRepository.findById(id).orElse(null)
 
     fun findAll(): List<Post> = postRepository.findAll()
 
