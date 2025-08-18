@@ -18,7 +18,6 @@ class Post(
     var title: String,
     var content: String
 ) : BaseEntity() {
-    @JvmField
     @OneToMany(
         mappedBy = "post",
         fetch = LAZY,
