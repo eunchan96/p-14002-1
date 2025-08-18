@@ -3,10 +3,10 @@ package com.back.domain.member.member.controller
 import com.back.domain.member.member.dto.MemberWithUsernameDto
 import com.back.domain.member.member.service.MemberService
 import com.back.standard.extensions.getOrThrow
+import com.back.standard.page.dto.PageDto
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.data.web.PageableDefault
@@ -29,10 +29,10 @@ class ApiV1AdmMemberController(
     @GetMapping
     fun items(
         @PageableDefault(size = 30, page = 0, sort = ["id"], direction = Sort.Direction.ASC) pageable: Pageable
-    ): Page<MemberWithUsernameDto> {
+    ): PageDto<MemberWithUsernameDto> {
         val members = memberService.findByListedPage(pageable)
 
-        return members.map { MemberWithUsernameDto(it) }
+        return PageDto(members.map { MemberWithUsernameDto(it) })
     }
 
     @GetMapping("/{id}")

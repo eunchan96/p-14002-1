@@ -7,6 +7,7 @@ import com.back.domain.post.post.service.PostService
 import com.back.global.rq.Rq
 import com.back.global.rsData.RsData
 import com.back.standard.extensions.getOrThrow
+import com.back.standard.page.dto.PageDto
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -33,10 +34,10 @@ class ApiV1PostController(
     @Transactional(readOnly = true)
     fun items(
         @PageableDefault(size = 30, page = 0, sort = ["id"], direction = Sort.Direction.ASC) pageable: Pageable
-    ): Page<PostDto> {
-        val items: Page<Post> = postService.findByListedPage(pageable)
+    ): PageDto<PostDto> {
+        val posts: Page<Post> = postService.findByListedPage(pageable)
 
-        return items.map { PostDto(it) }
+        return PageDto(posts.map { PostDto(it) })
     }
 
     @GetMapping("/{id}")
