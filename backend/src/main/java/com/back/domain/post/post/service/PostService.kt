@@ -51,7 +51,7 @@ class PostService(
         postRepository.delete(post)
     }
 
-    fun findLatest(): Optional<Post> {
+    fun findLatest(): Post? {
         return postRepository.findFirstByOrderByIdDesc()
     }
 

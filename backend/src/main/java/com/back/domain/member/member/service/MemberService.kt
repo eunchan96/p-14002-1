@@ -24,8 +24,7 @@ class MemberService(
     @JvmOverloads
     fun join(username: String, password: String?, nickname: String, profileImgUrl: String? = null): Member {
         memberRepository
-            .findByUsername(username)
-            .ifPresent {
+            .findByUsername(username)?.let {
                 throw ServiceException("409-1", "이미 존재하는 아이디입니다.")
             }
 
@@ -39,11 +38,11 @@ class MemberService(
         return memberRepository.save<Member>(member)
     }
 
-    fun findByUsername(username: String): Optional<Member> {
+    fun findByUsername(username: String): Member? {
         return memberRepository.findByUsername(username)
     }
 
-    fun findByApiKey(apiKey: String): Optional<Member> {
+    fun findByApiKey(apiKey: String): Member? {
         return memberRepository.findByApiKey(apiKey)
     }
 
@@ -72,16 +71,13 @@ class MemberService(
     }
 
     fun modifyOrJoin(username: String, password: String, nickname: String, profileImgUrl: String): RsData<Member> {
-        var member = findByUsername(username).orElse(null)
-
-        if (member == null) {
-            member = join(username, password, nickname, profileImgUrl)
-            return RsData("201-1", "회원가입이 완료되었습니다.", member)
+        findByUsername(username)?.let {
+            modify(it, nickname, profileImgUrl)
+            return RsData("200-1", "회원 정보가 수정되었습니다.", it)
+        } ?: run {
+            var joined = join(username, password, nickname, profileImgUrl)
+            return RsData("201-1", "회원가입이 완료되었습니다.", joined)
         }
-
-        modify(member, nickname, profileImgUrl)
-
-        return RsData("200-1", "회원 정보가 수정되었습니다.", member)
     }
 
     private fun modify(member: Member, nickname: String, profileImgUrl: String) {

@@ -2,6 +2,7 @@ package com.back.domain.post.post.controller
 
 import com.back.domain.member.member.service.MemberService
 import com.back.domain.post.post.service.PostService
+import com.back.standard.extensions.getOrThrow
 import jakarta.servlet.http.Cookie
 import org.hamcrest.Matchers
 import org.junit.jupiter.api.DisplayName
@@ -54,7 +55,7 @@ class ApiV1PostControllerTest {
             )
             .andDo(MockMvcResultHandlers.print())
 
-        val post = postService.findLatest().get()
+        val post = postService.findLatest().getOrThrow()
 
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostController::class.java))
@@ -80,7 +81,7 @@ class ApiV1PostControllerTest {
     @DisplayName("글 쓰기, with wrong apiKey, with valid accessToken")
     @Throws(Exception::class)
     fun t14() {
-        val actor = memberService.findByUsername("user1").get()
+        val actor = memberService.findByUsername("user1").getOrThrow()
         val actorAccessToken = memberService.genAccessToken(actor)
 
         val resultActions = mvc
@@ -110,7 +111,7 @@ class ApiV1PostControllerTest {
     @DisplayName("글 쓰기, with wrong apiKey cookie, with valid accessToken cookie")
     @Throws(Exception::class)
     fun t15() {
-        val actor = memberService.findByUsername("user1").get()
+        val actor = memberService.findByUsername("user1").getOrThrow()
         val actorAccessToken = memberService.genAccessToken(actor)
 
         val resultActions = mvc
@@ -332,7 +333,7 @@ class ApiV1PostControllerTest {
     fun t12() {
         val id = 1
 
-        val actor = memberService.findByUsername("user3").get()
+        val actor = memberService.findByUsername("user3").getOrThrow()
         val actorApiKey = actor.apiKey
 
         val resultActions = mvc
@@ -388,7 +389,7 @@ class ApiV1PostControllerTest {
     fun t13() {
         val id = 1
 
-        val actor = memberService.findByUsername("user3").get()
+        val actor = memberService.findByUsername("user3").getOrThrow()
         val actorApiKey = actor.apiKey
 
         val resultActions = mvc

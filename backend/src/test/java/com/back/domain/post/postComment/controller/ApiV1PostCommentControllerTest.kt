@@ -2,6 +2,7 @@ package com.back.domain.post.postComment.controller
 
 import com.back.domain.member.member.service.MemberService
 import com.back.domain.post.post.service.PostService
+import com.back.standard.extensions.getOrThrow
 import org.hamcrest.Matchers
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -138,7 +139,7 @@ class ApiV1PostCommentControllerTest {
         val postId = 1
         val id = 1
 
-        val actor = memberService.findByUsername("user3").get()
+        val actor = memberService.findByUsername("user3").getOrThrow()
         val actorApiKey = actor.apiKey
 
         val resultActions = mvc
@@ -195,7 +196,7 @@ class ApiV1PostCommentControllerTest {
         val postId = 1
         val id = 1
 
-        val actor = memberService.findByUsername("user3").get()
+        val actor = memberService.findByUsername("user3").getOrThrow()
         val actorApiKey = actor.apiKey
 
         val resultActions = mvc

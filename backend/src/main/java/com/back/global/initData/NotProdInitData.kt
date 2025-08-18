@@ -4,6 +4,7 @@ import com.back.domain.member.member.service.MemberService
 import com.back.domain.post.post.service.PostService
 import com.back.global.app.CustomConfigProperties
 import com.back.global.app.CustomConfigProperties.NotProdMember
+import com.back.standard.extensions.getOrThrow
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
@@ -67,9 +68,9 @@ class NotProdInitData(
     fun work2() {
         if (postService.count() > 0) return
 
-        val memberUser1 = memberService.findByUsername("user1").get()
-        val memberUser2 = memberService.findByUsername("user2").get()
-        val memberUser3 = memberService.findByUsername("user3").get()
+        val memberUser1 = memberService.findByUsername("user1").getOrThrow()
+        val memberUser2 = memberService.findByUsername("user2").getOrThrow()
+        val memberUser3 = memberService.findByUsername("user3").getOrThrow()
 
         val post1 = postService.write(memberUser1, "제목 1", "내용 1")
         val post2 = postService.write(memberUser1, "제목 2", "내용 2")

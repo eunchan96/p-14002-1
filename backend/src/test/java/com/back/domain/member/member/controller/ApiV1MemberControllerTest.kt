@@ -1,6 +1,7 @@
 package com.back.domain.member.member.controller
 
 import com.back.domain.member.member.service.MemberService
+import com.back.standard.extensions.getOrThrow
 import jakarta.servlet.http.Cookie
 import org.assertj.core.api.Assertions
 import org.hamcrest.Matchers
@@ -51,7 +52,7 @@ class ApiV1MemberControllerTest {
             )
             .andDo(MockMvcResultHandlers.print())
 
-        val member = memberService.findByUsername("newUser").get()
+        val member = memberService.findByUsername("newUser").getOrThrow()
 
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1MemberController::class.java))
@@ -95,7 +96,7 @@ class ApiV1MemberControllerTest {
             )
             .andDo(MockMvcResultHandlers.print())
 
-        val member = memberService.findByUsername("user1").get()
+        val member = memberService.findByUsername("user1").getOrThrow()
 
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1MemberController::class.java))
@@ -144,7 +145,7 @@ class ApiV1MemberControllerTest {
             )
             .andDo(MockMvcResultHandlers.print())
 
-        val member = memberService.findByUsername("user1").get()
+        val member = memberService.findByUsername("user1").getOrThrow()
 
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1MemberController::class.java))
@@ -168,7 +169,7 @@ class ApiV1MemberControllerTest {
     @DisplayName("내 정보, with apiKey Cookie")
     @Throws(Exception::class)
     fun t4() {
-        val actor = memberService.findByUsername("user1").get()
+        val actor = memberService.findByUsername("user1").getOrThrow()
         val actorApiKey = actor.apiKey
 
         val resultActions = mvc
@@ -220,7 +221,7 @@ class ApiV1MemberControllerTest {
     @DisplayName("엑세스 토큰이 만료되었거나 유효하지 않다면 apiKey를 통해서 재발급")
     @Throws(Exception::class)
     fun t7() {
-        val actor = memberService.findByUsername("user1").get()
+        val actor = memberService.findByUsername("user1").getOrThrow()
         val actorApiKey = actor.apiKey
 
         val resultActions = mvc
