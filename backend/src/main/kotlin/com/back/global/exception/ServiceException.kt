@@ -5,7 +5,7 @@ import com.back.global.rsData.RsData
 class ServiceException(
     private val resultCode: String,
     private val msg: String
-) : RuntimeException("$resultCode  : $msg") {
+) : RuntimeException("$resultCode : $msg") {
     val rsData: RsData<Void>
         get() = RsData(resultCode, msg)
 }
