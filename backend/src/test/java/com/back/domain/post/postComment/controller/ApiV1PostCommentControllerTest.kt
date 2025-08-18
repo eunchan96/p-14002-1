@@ -45,8 +45,8 @@ class ApiV1PostCommentControllerTest {
             )
             .andDo(MockMvcResultHandlers.print())
 
-        val post = postService.findById(postId).get()
-        val postComment = post.findCommentById(id).get()
+        val post = postService.findById(postId).getOrThrow()
+        val postComment = post.findCommentById(id).getOrThrow()
 
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostCommentController::class.java))
@@ -79,7 +79,7 @@ class ApiV1PostCommentControllerTest {
             )
             .andDo(MockMvcResultHandlers.print())
 
-        val post = postService.findById(postId).get()
+        val post = postService.findById(postId).getOrThrow()
         val comments = post.comments
 
         resultActions
@@ -246,7 +246,7 @@ class ApiV1PostCommentControllerTest {
             )
             .andDo(MockMvcResultHandlers.print())
 
-        val post = postService.findById(postId).get()
+        val post = postService.findById(postId).getOrThrow()
 
         val postComment = post.comments.last()
 

@@ -420,7 +420,7 @@ class ApiV1PostControllerTest {
             )
             .andDo(MockMvcResultHandlers.print())
 
-        val post = postService.findById(id).get()
+        val post = postService.findById(id).getOrThrow()
 
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostController::class.java))

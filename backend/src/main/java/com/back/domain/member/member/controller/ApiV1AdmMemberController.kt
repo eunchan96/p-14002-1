@@ -2,6 +2,7 @@ package com.back.domain.member.member.controller
 
 import com.back.domain.member.member.dto.MemberWithUsernameDto
 import com.back.domain.member.member.service.MemberService
+import com.back.standard.extensions.getOrThrow
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -40,7 +41,7 @@ class ApiV1AdmMemberController(
     fun item(
         @PathVariable id: Int
     ): MemberWithUsernameDto {
-        val member = memberService.findById(id).get()
+        val member = memberService.findById(id).getOrThrow()
 
         return MemberWithUsernameDto(member)
     }

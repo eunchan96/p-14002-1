@@ -7,7 +7,6 @@ import com.back.domain.post.postComment.entity.PostComment
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
 class PostService(
@@ -23,7 +22,7 @@ class PostService(
         return postRepository.save(post)
     }
 
-    fun findById(id: Int): Optional<Post> = postRepository.findById(id)
+    fun findById(id: Int): Post? = postRepository.findNullableById(id)
 
     fun findAll(): List<Post> = postRepository.findAll()
 

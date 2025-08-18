@@ -10,7 +10,6 @@ import jakarta.persistence.Entity
 import jakarta.persistence.FetchType.LAZY
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
-import java.util.*
 
 @Entity
 class Post(
@@ -38,9 +37,8 @@ class Post(
         return postComment
     }
 
-    fun findCommentById(id: Int): Optional<PostComment> {
+    fun findCommentById(id: Int): PostComment? {
         return comments.firstOrNull { it.id == id }
-            .let { Optional.ofNullable(it) }
     }
 
     fun deleteComment(postComment: PostComment?): Boolean {

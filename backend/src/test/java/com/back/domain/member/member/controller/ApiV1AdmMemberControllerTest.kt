@@ -1,6 +1,7 @@
 package com.back.domain.member.member.controller
 
 import com.back.domain.member.member.service.MemberService
+import com.back.standard.extensions.getOrThrow
 import org.hamcrest.Matchers
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -102,7 +103,7 @@ class ApiV1AdmMemberControllerTest {
             )
             .andDo(MockMvcResultHandlers.print())
 
-        val member = memberService.findById(id).get()
+        val member = memberService.findById(id).getOrThrow()
 
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1AdmMemberController::class.java))

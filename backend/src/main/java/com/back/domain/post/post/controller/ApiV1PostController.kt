@@ -6,6 +6,7 @@ import com.back.domain.post.post.entity.Post
 import com.back.domain.post.post.service.PostService
 import com.back.global.rq.Rq
 import com.back.global.rsData.RsData
+import com.back.standard.extensions.getOrThrow
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -42,7 +43,7 @@ class ApiV1PostController(
     @Transactional(readOnly = true)
     @Operation(summary = "단건 조회")
     fun item(@PathVariable id: Int): PostWithContentDto {
-        val post = postService.findById(id).get()
+        val post = postService.findById(id).getOrThrow()
 
         return PostWithContentDto(post)
     }
@@ -55,7 +56,7 @@ class ApiV1PostController(
     ): RsData<Void> {
         val actor = rq.actor
 
-        val post = postService.findById(id).get()
+        val post = postService.findById(id).getOrThrow()
 
         post.checkActorCanDelete(actor)
 
@@ -104,7 +105,7 @@ class ApiV1PostController(
     ): RsData<Void> {
         val actor = rq.actor
 
-        val post = postService.findById(id).get()
+        val post = postService.findById(id).getOrThrow()
 
         post.checkActorCanModify(actor)
 

@@ -8,7 +8,6 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
 class MemberService(
@@ -44,7 +43,7 @@ class MemberService(
 
     fun payload(accessToken: String): Map<String, Any>? = authTokenService.payload(accessToken)
 
-    fun findById(id: Int): Optional<Member> = memberRepository.findById(id)
+    fun findById(id: Int): Member? = memberRepository.findNullableById(id)
 
     fun findAll(): List<Member> = memberRepository.findAll()
 
