@@ -73,15 +73,15 @@ custom:
   accessToken:
     expirationSeconds: "#{60*20}"
   notProdMembers:
-    - username: KAKAO__4363668677
+    - username: KAKAO__4400010784
       apiKey: kakao__1
-      nickname: 장희성
-      profileImgUrl: http://img1.kakaocdn.net/thumb/R640x640.q70/?fname=http://t1.kakaocdn.net/account_images/default_profile.jpeg
-    - username: GOOGLE__103240209825008011930
+      nickname: 방은찬
+      profileImgUrl: http://k.kakaocdn.net/dn/vNiMy/btsKDhpd58s/9AV34g4r3GeVmqdlQN1AP1/img_640x640.jpg
+    - username: GOOGLE__105856100148102643085
       apiKey: google__1
-      nickname: 몰입코딩(개발자 희성)
-      profileImgUrl: https://lh3.googleusercontent.com/a/ACg8ocKClYFeK9VXN6ROFvx-ddTpt0ep30M3TZwaKk1esQrbEtzuqoC2=s96-c
-    - username: NAVER__NtdoLF-xaAaXJDgT7m1KKk1YrgM2DdZs0eWNr-5qfxk
+      nickname: 방은찬
+      profileImgUrl: https://lh3.googleusercontent.com/a/ACg8ocKeU64Sophd36BZiz3-D6cmJv_woeHm6AJAdC__Jam90xWA2g=s96-c
+    - username: NAVER__JEAYZzZcHQec_2zEySybbhLVHUwFW6rGGYdvrrVAsfc
       apiKey: naver__1
-      nickname: 희성
-      profileImgUrl: https://phinf.pstatic.net/contact/profile/blog/22/6/jangka44.jpg
+      nickname: 은찬
+      profileImgUrl: https://ssl.pstatic.net/static/pwe/address/img_profile.png
