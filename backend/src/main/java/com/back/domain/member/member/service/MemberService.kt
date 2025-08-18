@@ -4,6 +4,8 @@ import com.back.domain.member.member.entity.Member
 import com.back.domain.member.member.repository.MemberRepository
 import com.back.global.exception.ServiceException
 import com.back.global.rsData.RsData
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import java.util.*
@@ -84,5 +86,9 @@ class MemberService(
 
     private fun modify(member: Member, nickname: String, profileImgUrl: String) {
         member.modify(nickname, profileImgUrl)
+    }
+
+    fun findByListedPage(pageable: Pageable): Page<Member> {
+        return memberRepository.findAll(pageable)
     }
 }
