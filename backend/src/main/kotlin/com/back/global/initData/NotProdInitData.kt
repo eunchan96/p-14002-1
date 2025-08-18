@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Lazy
 import org.springframework.context.annotation.Profile
 import org.springframework.transaction.annotation.Transactional
 import java.util.function.Consumer
+import java.util.stream.IntStream
 
 @Profile("!prod")
 @Configuration
@@ -30,7 +31,8 @@ class NotProdInitData(
     fun notProdInitDataApplicationRunner(): ApplicationRunner {
         return ApplicationRunner { args: ApplicationArguments? ->
             self.work1()
-            self.work2()
+//            self.work2()
+            self.work3()
         }
     }
 
@@ -39,19 +41,22 @@ class NotProdInitData(
         if (memberService.count() > 0) return
 
         val memberSystem = memberService.join("system", "1234", "시스템")
-        memberSystem.modifyApiKey(memberSystem.username)
-
         val memberAdmin = memberService.join("admin", "1234", "관리자")
-        memberAdmin.modifyApiKey(memberAdmin.username)
-
         val memberUser1 = memberService.join("user1", "1234", "유저1")
-        memberUser1.modifyApiKey(memberUser1.username)
-
         val memberUser2 = memberService.join("user2", "1234", "유저2")
-        memberUser2.modifyApiKey(memberUser2.username)
-
         val memberUser3 = memberService.join("user3", "1234", "유저3")
+        val memberUser4 = memberService.join("user4", "1234", "유저4")
+        val memberUser5 = memberService.join("user5", "1234", "유저5")
+        val memberUser6 = memberService.join("user6", "1234", "유저6")
+
+        memberSystem.modifyApiKey(memberSystem.username)
+        memberAdmin.modifyApiKey(memberAdmin.username)
+        memberUser1.modifyApiKey(memberUser1.username)
+        memberUser2.modifyApiKey(memberUser2.username)
         memberUser3.modifyApiKey(memberUser3.username)
+        memberUser4.modifyApiKey(memberUser4.username)
+        memberUser5.modifyApiKey(memberUser5.username)
+        memberUser6.modifyApiKey(memberUser6.username)
 
         customConfigProperties.notProdMembers.forEach(Consumer { notProdMember: NotProdMember? ->
             val socialMember = memberService.join(
@@ -81,5 +86,96 @@ class NotProdInitData(
         post1.addComment(memberUser2, "댓글 1-3")
         post2.addComment(memberUser3, "댓글 2-1")
         post2.addComment(memberUser3, "댓글 2-2")
+    }
+
+    @Transactional
+    fun work3() {
+        if (postService.count() > 0) return
+
+        val memberUser1 = memberService.findByUsername("user1").getOrThrow()
+        val memberUser2 = memberService.findByUsername("user2").getOrThrow()
+        val memberUser3 = memberService.findByUsername("user3").getOrThrow()
+        val memberUser4 = memberService.findByUsername("user4").getOrThrow()
+        val memberUser5 = memberService.findByUsername("user5").getOrThrow()
+        val memberUser6 = memberService.findByUsername("user6").getOrThrow()
+
+        val post1 = postService.write(
+            memberUser1,
+            "축구 하실 분?",
+            "14시 까지 22명을 모아야 합니다."
+        )
+        post1.addComment(memberUser1, "대답.")
+        post1.addComment(memberUser2, "저요!")
+        post1.addComment(memberUser3, "저도 할래요.")
+
+        val post2 = postService.write(
+            memberUser1,
+            "배구 하실 분?",
+            "15시 까지 12명을 모아야 합니다."
+        )
+        post2.addComment(memberUser4, "저요!, 저 배구 잘합니다.")
+
+        val post3 = postService.write(
+            memberUser2,
+            "농구 하실 분?",
+            "16시 까지 10명을 모아야 합니다."
+        )
+
+        val post4 = postService.write(
+            memberUser3,
+            "발야구 하실 분?",
+            "17시 까지 14명을 모아야 합니다."
+        )
+
+        val post5 = postService.write(
+            memberUser4,
+            "피구 하실 분?",
+            "18시 까지 18명을 모아야 합니다."
+        )
+
+        val post6 = postService.write(
+            memberUser4,
+            "발야구를 밤에 하실 분?",
+            "22시 까지 18명을 모아야 합니다."
+        )
+
+        val post7 = postService.write(
+            memberUser4,
+            "발야구를 새벽 1시에 하실 분?",
+            "새벽 1시 까지 17명을 모아야 합니다."
+        )
+
+        val post8 = postService.write(
+            memberUser4,
+            "발야구를 새벽 3시에 하실 분?",
+            "새벽 3시 까지 19명을 모아야 합니다."
+        )
+
+        val post9 = postService.write(
+            memberUser4,
+            "테이블테니스를 하실 분있나요?",
+            "테이블테니스 강력 추천합니다."
+        )
+        val post10 = postService.write(
+            memberUser4,
+            "테니스 하실 분있나요?",
+            "테니스 강력 추천합니다."
+        )
+
+        IntStream.rangeClosed(11, 100).forEach { i: Int ->
+            postService.write(
+                memberUser5,
+                "테스트 게시물 $i",
+                "테스트 게시물 $i 내용"
+            )
+        }
+
+        IntStream.rangeClosed(101, 200).forEach { i: Int ->
+            postService.write(
+                memberUser6,
+                "테스트 게시물 $i",
+                "테스트 게시물 $i 내용"
+            )
+        }
     }
 }
