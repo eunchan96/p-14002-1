@@ -57,7 +57,7 @@ class ApiV1MemberControllerTest {
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1MemberController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("join"))
-            .andExpect(MockMvcResultMatchers.status().isCreated())
+            .andExpect(MockMvcResultMatchers.status().isCreated)
             .andExpect(MockMvcResultMatchers.jsonPath("$.resultCode").value("201-1"))
             .andExpect(
                 MockMvcResultMatchers.jsonPath("$.msg").value("${member.name}님 환영합니다. 회원가입이 완료되었습니다.")
@@ -66,11 +66,11 @@ class ApiV1MemberControllerTest {
             .andExpect(MockMvcResultMatchers.jsonPath("$.data.id").value(member.id))
             .andExpect(
                 MockMvcResultMatchers.jsonPath("$.data.createDate")
-                    .value(Matchers.startsWith(member.createDate.toString().substring(0, 20)))
+                    .value(Matchers.startsWith(member.createDate.toString().take(20)))
             )
             .andExpect(
                 MockMvcResultMatchers.jsonPath("$.data.modifyDate")
-                    .value(Matchers.startsWith(member.modifyDate.toString().substring(0, 20)))
+                    .value(Matchers.startsWith(member.modifyDate.toString().take(20)))
             )
             .andExpect(MockMvcResultMatchers.jsonPath("$.data.name").value(member.name))
             .andExpect(MockMvcResultMatchers.jsonPath("$.data.isAdmin").value(member.isAdmin))
@@ -101,7 +101,7 @@ class ApiV1MemberControllerTest {
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1MemberController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("login"))
-            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.resultCode").value("200-1"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.msg").value("${member.name}님 환영합니다."))
             .andExpect(MockMvcResultMatchers.jsonPath("$.data").exists())
@@ -109,11 +109,11 @@ class ApiV1MemberControllerTest {
             .andExpect(MockMvcResultMatchers.jsonPath("$.data.item.id").value(member.id))
             .andExpect(
                 MockMvcResultMatchers.jsonPath("$.data.item.createDate")
-                    .value(Matchers.startsWith(member.createDate.toString().substring(0, 20)))
+                    .value(Matchers.startsWith(member.createDate.toString().take(20)))
             )
             .andExpect(
                 MockMvcResultMatchers.jsonPath("$.data.item.modifyDate")
-                    .value(Matchers.startsWith(member.modifyDate.toString().substring(0, 20)))
+                    .value(Matchers.startsWith(member.modifyDate.toString().take(20)))
             )
             .andExpect(MockMvcResultMatchers.jsonPath("$.data.item.name").value(member.name))
             .andExpect(MockMvcResultMatchers.jsonPath("$.data.item.isAdmin").value(member.isAdmin))
@@ -150,15 +150,15 @@ class ApiV1MemberControllerTest {
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1MemberController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("me"))
-            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(member.id))
             .andExpect(
                 MockMvcResultMatchers.jsonPath("$.createDate")
-                    .value(Matchers.startsWith(member.createDate.toString().substring(0, 20)))
+                    .value(Matchers.startsWith(member.createDate.toString().take(20)))
             )
             .andExpect(
                 MockMvcResultMatchers.jsonPath("$.modifyDate")
-                    .value(Matchers.startsWith(member.modifyDate.toString().substring(0, 20)))
+                    .value(Matchers.startsWith(member.modifyDate.toString().take(20)))
             )
             .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(member.name))
             .andExpect(MockMvcResultMatchers.jsonPath("$.username").value(member.username))
@@ -182,7 +182,7 @@ class ApiV1MemberControllerTest {
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1MemberController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("me"))
-            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.status().isOk)
     }
 
 
@@ -199,7 +199,7 @@ class ApiV1MemberControllerTest {
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1MemberController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("logout"))
-            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.resultCode").value("200-1"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.msg").value("로그아웃 되었습니다."))
             .andExpect { result: MvcResult ->
@@ -234,7 +234,7 @@ class ApiV1MemberControllerTest {
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1MemberController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("me"))
-            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.status().isOk)
 
         resultActions.andExpect { result: MvcResult ->
             val accessTokenCookie = result.response.getCookie("accessToken")!!
@@ -260,7 +260,7 @@ class ApiV1MemberControllerTest {
             .andDo(MockMvcResultHandlers.print())
 
         resultActions
-            .andExpect(MockMvcResultMatchers.status().isUnauthorized())
+            .andExpect(MockMvcResultMatchers.status().isUnauthorized)
             .andExpect(MockMvcResultMatchers.jsonPath("$.resultCode").value("401-2"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.msg").value("Authorization 헤더가 Bearer 형식이 아닙니다."))
     }

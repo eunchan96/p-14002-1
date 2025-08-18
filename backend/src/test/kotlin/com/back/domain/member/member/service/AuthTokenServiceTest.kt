@@ -50,10 +50,7 @@ class AuthTokenServiceTest {
         val issuedAt = Date()
         val expiration = Date(issuedAt.time + expireMillis)
 
-        val payload = mapOf<String, Any>(
-            "name" to "Paul",
-            "age" to 23
-        )
+        val payload = mapOf("name" to "Paul", "age" to 23)
 
         val jwt = Jwts.builder()
             .claims(payload) // 내용
@@ -72,18 +69,17 @@ class AuthTokenServiceTest {
             .verifyWith(secretKey)
             .build()
             .parse(jwt)
-            .getPayload() as Map<String, Any>
+            .payload as Map<*, *>
 
-        assertThat(parsedPayload).containsAllEntriesOf(payload)
+        assertThat(payload.all { (key, value) ->
+            parsedPayload[key] == value
+        }).isTrue
     }
 
     @Test
     @DisplayName("Ut.jwt.toString 를 통해서 JWT 생성, {name=\"Paul\", age=23}")
     fun t3() {
-        val payload = mapOf<String, Any>(
-            "name" to "Paul",
-            "age" to 23
-        )
+        val payload = mapOf("name" to "Paul", "age" to 23)
 
         val jwt = Ut.jwt.toString(
             jwtSecretKey,
@@ -94,8 +90,10 @@ class AuthTokenServiceTest {
         assertThat(jwt).isNotBlank()
         assertThat(Ut.jwt.isValid(jwtSecretKey, jwt)).isTrue()
 
-        val parsedPayload = Ut.jwt.payload(jwtSecretKey, jwt)
-        assertThat(parsedPayload).containsAllEntriesOf(payload)
+        val parsedPayload = Ut.jwt.payload(jwtSecretKey, jwt).getOrThrow()
+        assertThat(payload.all { (key, value) ->
+            parsedPayload[key] == value
+        }).isTrue
     }
 
     @Test
@@ -108,13 +106,14 @@ class AuthTokenServiceTest {
         println("accessToken = $accessToken")
 
         val parsedPayload = authTokenService.payload(accessToken)
+
+        val expectedPayload = mapOf(
+            "id" to memberUser1.id,
+            "username" to memberUser1.username,
+            "name" to memberUser1.name
+        )
+
         assertThat(parsedPayload)
-            .containsAllEntriesOf(
-                mapOf(
-                    "id" to memberUser1.id,
-                    "username" to memberUser1.username,
-                    "name" to memberUser1.name
-                )
-            )
+            .isEqualTo(expectedPayload)
     }
 }

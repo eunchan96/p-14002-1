@@ -39,7 +39,7 @@ class ApiV1AdmPostControllerTest {
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1AdmPostController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("count"))
-            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.all").value(postService.count()))
     }
 }

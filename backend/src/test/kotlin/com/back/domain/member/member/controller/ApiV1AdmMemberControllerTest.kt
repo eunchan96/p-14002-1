@@ -45,7 +45,7 @@ class ApiV1AdmMemberControllerTest {
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1AdmMemberController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("items"))
-            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.totalItems").value(memberPage.totalElements))
             .andExpect(MockMvcResultMatchers.jsonPath("$.totalPages").value(memberPage.totalPages))
             .andExpect(MockMvcResultMatchers.jsonPath("$.currentPageNumber").value(1))
@@ -61,11 +61,11 @@ class ApiV1AdmMemberControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].id").value(member.id))
                 .andExpect(
                     MockMvcResultMatchers.jsonPath("$.items[$i].createDate")
-                        .value(Matchers.startsWith(member.createDate.toString().substring(0, 20)))
+                        .value(Matchers.startsWith(member.createDate.toString().take(20)))
                 )
                 .andExpect(
                     MockMvcResultMatchers.jsonPath("$.items[$i].modifyDate")
-                        .value(Matchers.startsWith(member.modifyDate.toString().substring(0, 20)))
+                        .value(Matchers.startsWith(member.modifyDate.toString().take(20)))
                 )
                 .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].name").value(member.name))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].username").value(member.username))
@@ -85,7 +85,7 @@ class ApiV1AdmMemberControllerTest {
             .andDo(MockMvcResultHandlers.print())
 
         resultActions
-            .andExpect(MockMvcResultMatchers.status().isForbidden())
+            .andExpect(MockMvcResultMatchers.status().isForbidden)
             .andExpect(MockMvcResultMatchers.jsonPath("$.resultCode").value("403-1"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.msg").value("권한이 없습니다."))
     }
@@ -108,15 +108,15 @@ class ApiV1AdmMemberControllerTest {
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1AdmMemberController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("item"))
-            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(member.id))
             .andExpect(
                 MockMvcResultMatchers.jsonPath("$.createDate")
-                    .value(Matchers.startsWith(member.createDate.toString().substring(0, 20)))
+                    .value(Matchers.startsWith(member.createDate.toString().take(20)))
             )
             .andExpect(
                 MockMvcResultMatchers.jsonPath("$.modifyDate")
-                    .value(Matchers.startsWith(member.modifyDate.toString().substring(0, 20)))
+                    .value(Matchers.startsWith(member.modifyDate.toString().take(20)))
             )
             .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(member.name))
             .andExpect(MockMvcResultMatchers.jsonPath("$.username").value(member.username))
@@ -137,7 +137,7 @@ class ApiV1AdmMemberControllerTest {
             .andDo(MockMvcResultHandlers.print())
 
         resultActions
-            .andExpect(MockMvcResultMatchers.status().isForbidden())
+            .andExpect(MockMvcResultMatchers.status().isForbidden)
             .andExpect(MockMvcResultMatchers.jsonPath("$.resultCode").value("403-1"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.msg").value("권한이 없습니다."))
     }

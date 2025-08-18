@@ -51,15 +51,15 @@ class ApiV1PostCommentControllerTest {
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostCommentController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("item"))
-            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(postComment.id))
             .andExpect(
                 MockMvcResultMatchers.jsonPath("$.createDate")
-                    .value(Matchers.startsWith(postComment.createDate.toString().substring(0, 20)))
+                    .value(Matchers.startsWith(postComment.createDate.toString().take(20)))
             )
             .andExpect(
                 MockMvcResultMatchers.jsonPath("$.modifyDate")
-                    .value(Matchers.startsWith(postComment.modifyDate.toString().substring(0, 20)))
+                    .value(Matchers.startsWith(postComment.modifyDate.toString().take(20)))
             )
             .andExpect(MockMvcResultMatchers.jsonPath("$.authorId").value(postComment.author.id))
             .andExpect(MockMvcResultMatchers.jsonPath("$.authorName").value(postComment.author.name))
@@ -85,7 +85,7 @@ class ApiV1PostCommentControllerTest {
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostCommentController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("items"))
-            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(comments.size))
 
         for (i in comments.indices) {
@@ -95,11 +95,11 @@ class ApiV1PostCommentControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[$i].id").value(postComment.id))
                 .andExpect(
                     MockMvcResultMatchers.jsonPath("$[$i].createDate")
-                        .value(Matchers.startsWith(postComment.createDate.toString().substring(0, 20)))
+                        .value(Matchers.startsWith(postComment.createDate.toString().take(20)))
                 )
                 .andExpect(
                     MockMvcResultMatchers.jsonPath("$[$i].modifyDate")
-                        .value(Matchers.startsWith(postComment.modifyDate.toString().substring(0, 20)))
+                        .value(Matchers.startsWith(postComment.modifyDate.toString().take(20)))
                 )
                 .andExpect(MockMvcResultMatchers.jsonPath("$[$i].authorId").value(postComment.author.id))
                 .andExpect(
@@ -127,7 +127,7 @@ class ApiV1PostCommentControllerTest {
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostCommentController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("delete"))
-            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.resultCode").value("200-1"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.msg").value("${id}번 댓글이 삭제되었습니다."))
     }
@@ -152,7 +152,7 @@ class ApiV1PostCommentControllerTest {
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostCommentController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("delete"))
-            .andExpect(MockMvcResultMatchers.status().isForbidden())
+            .andExpect(MockMvcResultMatchers.status().isForbidden)
             .andExpect(MockMvcResultMatchers.jsonPath("$.resultCode").value("403-2"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.msg").value("${id}번 댓글 삭제권한이 없습니다."))
     }
@@ -184,7 +184,7 @@ class ApiV1PostCommentControllerTest {
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostCommentController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("modify"))
-            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.resultCode").value("200-1"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.msg").value("${id}번 댓글이 수정되었습니다."))
     }
@@ -218,7 +218,7 @@ class ApiV1PostCommentControllerTest {
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostCommentController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("modify"))
-            .andExpect(MockMvcResultMatchers.status().isForbidden())
+            .andExpect(MockMvcResultMatchers.status().isForbidden)
             .andExpect(MockMvcResultMatchers.jsonPath("$.resultCode").value("403-1"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.msg").value("${id}번 댓글 수정권한이 없습니다."))
     }
@@ -253,17 +253,17 @@ class ApiV1PostCommentControllerTest {
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostCommentController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("write"))
-            .andExpect(MockMvcResultMatchers.status().isCreated())
+            .andExpect(MockMvcResultMatchers.status().isCreated)
             .andExpect(MockMvcResultMatchers.jsonPath("$.resultCode").value("201-1"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.msg").value("${postComment.id}번 댓글이 작성되었습니다."))
             .andExpect(MockMvcResultMatchers.jsonPath("$.data.id").value(postComment.id))
             .andExpect(
                 MockMvcResultMatchers.jsonPath("$.data.createDate")
-                    .value(Matchers.startsWith(postComment.createDate.toString().substring(0, 20)))
+                    .value(Matchers.startsWith(postComment.createDate.toString().take(20)))
             )
             .andExpect(
                 MockMvcResultMatchers.jsonPath("$.data.modifyDate")
-                    .value(Matchers.startsWith(postComment.modifyDate.toString().substring(0, 20)))
+                    .value(Matchers.startsWith(postComment.modifyDate.toString().take(20)))
             )
             .andExpect(MockMvcResultMatchers.jsonPath("$.data.authorId").value(postComment.author.id))
             .andExpect(MockMvcResultMatchers.jsonPath("$.data.authorName").value(postComment.author.name))

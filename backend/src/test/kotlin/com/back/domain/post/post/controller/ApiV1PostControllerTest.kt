@@ -60,17 +60,17 @@ class ApiV1PostControllerTest {
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("write"))
-            .andExpect(MockMvcResultMatchers.status().isCreated())
+            .andExpect(MockMvcResultMatchers.status().isCreated)
             .andExpect(MockMvcResultMatchers.jsonPath("$.resultCode").value("201-1"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.msg").value("${post.id}번 글이 작성되었습니다."))
             .andExpect(MockMvcResultMatchers.jsonPath("$.data.id").value(post.id))
             .andExpect(
                 MockMvcResultMatchers.jsonPath("$.data.createDate")
-                    .value(Matchers.startsWith(post.createDate.toString().substring(0, 20)))
+                    .value(Matchers.startsWith(post.createDate.toString().take(20)))
             )
             .andExpect(
                 MockMvcResultMatchers.jsonPath("$.data.modifyDate")
-                    .value(Matchers.startsWith(post.modifyDate.toString().substring(0, 20)))
+                    .value(Matchers.startsWith(post.modifyDate.toString().take(20)))
             )
             .andExpect(MockMvcResultMatchers.jsonPath("$.data.authorId").value(post.author.id))
             .andExpect(MockMvcResultMatchers.jsonPath("$.data.authorName").value(post.author.nickname))
@@ -104,7 +104,7 @@ class ApiV1PostControllerTest {
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("write"))
-            .andExpect(MockMvcResultMatchers.status().isCreated())
+            .andExpect(MockMvcResultMatchers.status().isCreated)
     }
 
     @Test
@@ -137,7 +137,7 @@ class ApiV1PostControllerTest {
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("write"))
-            .andExpect(MockMvcResultMatchers.status().isCreated())
+            .andExpect(MockMvcResultMatchers.status().isCreated)
     }
 
     @Test
@@ -164,7 +164,7 @@ class ApiV1PostControllerTest {
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("write"))
-            .andExpect(MockMvcResultMatchers.status().isBadRequest())
+            .andExpect(MockMvcResultMatchers.status().isBadRequest)
             .andExpect(MockMvcResultMatchers.jsonPath("$.resultCode").value("400-1"))
             .andExpect(
                 MockMvcResultMatchers.jsonPath("$.msg").value(
@@ -200,7 +200,7 @@ class ApiV1PostControllerTest {
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("write"))
-            .andExpect(MockMvcResultMatchers.status().isBadRequest())
+            .andExpect(MockMvcResultMatchers.status().isBadRequest)
             .andExpect(MockMvcResultMatchers.jsonPath("$.resultCode").value("400-1"))
             .andExpect(
                 MockMvcResultMatchers.jsonPath("$.msg").value(
@@ -235,7 +235,7 @@ class ApiV1PostControllerTest {
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("write"))
-            .andExpect(MockMvcResultMatchers.status().isBadRequest())
+            .andExpect(MockMvcResultMatchers.status().isBadRequest)
             .andExpect(MockMvcResultMatchers.jsonPath("$.resultCode").value("400-1"))
             .andExpect(
                 MockMvcResultMatchers.jsonPath("$.msg").value("요청 본문이 올바르지 않습니다.")
@@ -263,7 +263,7 @@ class ApiV1PostControllerTest {
             .andDo(MockMvcResultHandlers.print())
 
         resultActions
-            .andExpect(MockMvcResultMatchers.status().isUnauthorized())
+            .andExpect(MockMvcResultMatchers.status().isUnauthorized)
             .andExpect(MockMvcResultMatchers.jsonPath("$.resultCode").value("401-1"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.msg").value("로그인 후 이용해주세요."))
     }
@@ -290,7 +290,7 @@ class ApiV1PostControllerTest {
             .andDo(MockMvcResultHandlers.print())
 
         resultActions
-            .andExpect(MockMvcResultMatchers.status().isUnauthorized())
+            .andExpect(MockMvcResultMatchers.status().isUnauthorized)
             .andExpect(MockMvcResultMatchers.jsonPath("$.resultCode").value("401-3"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.msg").value("API 키가 유효하지 않습니다."))
     }
@@ -322,7 +322,7 @@ class ApiV1PostControllerTest {
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("modify"))
-            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.resultCode").value("200-1"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.msg").value("${id}번 글이 수정되었습니다."))
     }
@@ -356,7 +356,7 @@ class ApiV1PostControllerTest {
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("modify"))
-            .andExpect(MockMvcResultMatchers.status().isForbidden())
+            .andExpect(MockMvcResultMatchers.status().isForbidden)
             .andExpect(MockMvcResultMatchers.jsonPath("$.resultCode").value("403-1"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.msg").value("${id}번 글 수정권한이 없습니다."))
     }
@@ -378,7 +378,7 @@ class ApiV1PostControllerTest {
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("delete"))
-            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.resultCode").value("200-1"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.msg").value("${id}번 글이 삭제되었습니다."))
     }
@@ -402,7 +402,7 @@ class ApiV1PostControllerTest {
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("delete"))
-            .andExpect(MockMvcResultMatchers.status().isForbidden())
+            .andExpect(MockMvcResultMatchers.status().isForbidden)
             .andExpect(MockMvcResultMatchers.jsonPath("$.resultCode").value("403-2"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.msg").value("${id}번 글 삭제권한이 없습니다."))
     }
@@ -425,15 +425,15 @@ class ApiV1PostControllerTest {
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("item"))
-            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(post.id))
             .andExpect(
                 MockMvcResultMatchers.jsonPath("$.createDate")
-                    .value(Matchers.startsWith(post.createDate.toString().substring(0, 20)))
+                    .value(Matchers.startsWith(post.createDate.toString().take(20)))
             )
             .andExpect(
                 MockMvcResultMatchers.jsonPath("$.modifyDate")
-                    .value(Matchers.startsWith(post.modifyDate.toString().substring(0, 20)))
+                    .value(Matchers.startsWith(post.modifyDate.toString().take(20)))
             )
             .andExpect(MockMvcResultMatchers.jsonPath("$.authorId").value(post.author.id))
             .andExpect(MockMvcResultMatchers.jsonPath("$.authorName").value(post.author.nickname))
@@ -456,7 +456,7 @@ class ApiV1PostControllerTest {
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("item"))
-            .andExpect(MockMvcResultMatchers.status().isNotFound())
+            .andExpect(MockMvcResultMatchers.status().isNotFound)
             .andExpect(MockMvcResultMatchers.jsonPath("$.resultCode").value("404-1"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.msg").value("해당 데이터가 존재하지 않습니다."))
     }
@@ -477,7 +477,7 @@ class ApiV1PostControllerTest {
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("items"))
-            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.totalItems").value(postPage.totalElements))
             .andExpect(MockMvcResultMatchers.jsonPath("$.totalPages").value(postPage.totalPages))
             .andExpect(MockMvcResultMatchers.jsonPath("$.currentPageNumber").value(1))
@@ -493,11 +493,11 @@ class ApiV1PostControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].id").value(post.id))
                 .andExpect(
                     MockMvcResultMatchers.jsonPath("$.items[$i].createDate")
-                        .value(Matchers.startsWith(post.createDate.toString().substring(0, 20)))
+                        .value(Matchers.startsWith(post.createDate.toString().take(20)))
                 )
                 .andExpect(
                     MockMvcResultMatchers.jsonPath("$.items[$i].modifyDate")
-                        .value(Matchers.startsWith(post.modifyDate.toString().substring(0, 20)))
+                        .value(Matchers.startsWith(post.modifyDate.toString().take(20)))
                 )
                 .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].authorId").value(post.author.id))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].authorName").value(post.author.nickname))
@@ -520,7 +520,7 @@ class ApiV1PostControllerTest {
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("items"))
-            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.totalItems").value(postPage.totalElements))
             .andExpect(MockMvcResultMatchers.jsonPath("$.totalPages").value(postPage.totalPages))
             .andExpect(MockMvcResultMatchers.jsonPath("$.currentPageNumber").value(1))
@@ -534,11 +534,11 @@ class ApiV1PostControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].id").value(post.id))
                 .andExpect(
                     MockMvcResultMatchers.jsonPath("$.items[$i].createDate")
-                        .value(Matchers.startsWith(post.createDate.toString().substring(0, 20)))
+                        .value(Matchers.startsWith(post.createDate.toString().take(20)))
                 )
                 .andExpect(
                     MockMvcResultMatchers.jsonPath("$.items[$i].modifyDate")
-                        .value(Matchers.startsWith(post.modifyDate.toString().substring(0, 20)))
+                        .value(Matchers.startsWith(post.modifyDate.toString().take(20)))
                 )
                 .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].authorId").value(post.author.id))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].authorName").value(post.author.nickname))
@@ -561,7 +561,7 @@ class ApiV1PostControllerTest {
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("items"))
-            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.totalItems").value(postPage.totalElements))
             .andExpect(MockMvcResultMatchers.jsonPath("$.totalPages").value(postPage.totalPages))
             .andExpect(MockMvcResultMatchers.jsonPath("$.currentPageNumber").value(1))
@@ -575,11 +575,11 @@ class ApiV1PostControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].id").value(post.id))
                 .andExpect(
                     MockMvcResultMatchers.jsonPath("$.items[$i].createDate")
-                        .value(Matchers.startsWith(post.createDate.toString().substring(0, 20)))
+                        .value(Matchers.startsWith(post.createDate.toString().take(20)))
                 )
                 .andExpect(
                     MockMvcResultMatchers.jsonPath("$.items[$i].modifyDate")
-                        .value(Matchers.startsWith(post.modifyDate.toString().substring(0, 20)))
+                        .value(Matchers.startsWith(post.modifyDate.toString().take(20)))
                 )
                 .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].authorId").value(post.author.id))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].authorName").value(post.author.name))
