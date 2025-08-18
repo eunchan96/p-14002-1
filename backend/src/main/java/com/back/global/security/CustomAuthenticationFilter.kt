@@ -99,7 +99,7 @@ class CustomAuthenticationFilter(
 
         return if (headerAuthorization.isNotBlank()) {
             require(headerAuthorization.startsWith("Bearer ")) {
-                throw ServiceException("401-1", "Authorization 헤더가 Bearer 형식이 아닙니다.")
+                throw ServiceException("401-2", "Authorization 헤더가 Bearer 형식이 아닙니다.")
             }
 
             val headerAuthorBits = headerAuthorization.split(' ', limit = 3)

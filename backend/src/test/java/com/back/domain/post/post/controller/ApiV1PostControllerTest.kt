@@ -169,7 +169,6 @@ class ApiV1PostControllerTest {
                     """
                         title-NotBlank-must not be blank
                         title-Size-size must be between 2 and 100
-                        
                         """.trimIndent()
                 )
             )
@@ -206,7 +205,6 @@ class ApiV1PostControllerTest {
                     """
                         content-NotBlank-must not be blank
                         content-Size-size must be between 2 and 5000
-                        
                         """.trimIndent()
                 )
             )

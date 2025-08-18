@@ -103,7 +103,7 @@ class GlobalExceptionHandler {
         val rsData: RsData<Void> = ex.rsData
 
         return ResponseEntity
-            .status(HttpStatus.BAD_REQUEST)
+            .status(rsData.statusCode)
             .body(rsData)
     }
 }
