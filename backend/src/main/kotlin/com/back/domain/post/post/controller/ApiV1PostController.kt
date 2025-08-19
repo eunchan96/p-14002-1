@@ -31,7 +31,7 @@ class ApiV1PostController(
     @Operation(summary = "다건 조회")
     @Transactional(readOnly = true)
     fun items(
-        @RequestParam(defaultValue = "title") keywordType: PostSearchKeywordType,
+        @RequestParam(defaultValue = "TITLE") keywordType: PostSearchKeywordType,
         @RequestParam(defaultValue = "") keyword: String,
         @RequestParam(defaultValue = "1") page: Int,
         @RequestParam(defaultValue = "30") pageSize: Int

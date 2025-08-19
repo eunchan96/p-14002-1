@@ -55,8 +55,8 @@ dependencies {
     testImplementation("org.springframework.security:spring-security-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
-    implementation("io.github.openfeign.querydsl:querydsl-jpa:6.11")
-    kapt("io.github.openfeign.querydsl:querydsl-apt:6.11:jpa")
+    implementation("io.github.openfeign.querydsl:querydsl-jpa:7.0")
+    kapt("io.github.openfeign.querydsl:querydsl-apt:7.0:jpa")
 }
 
 tasks.withType<Test> {

@@ -23,7 +23,7 @@ class ApiV1AdmMemberController(
     @Transactional(readOnly = true)
     @GetMapping
     fun items(
-        @RequestParam(defaultValue = "username") keywordType: MemberSearchKeywordType,
+        @RequestParam(defaultValue = "USERNAME") keywordType: MemberSearchKeywordType,
         @RequestParam(defaultValue = "") keyword: String,
         @RequestParam(defaultValue = "1") page: Int,
         @RequestParam(defaultValue = "10") pageSize: Int

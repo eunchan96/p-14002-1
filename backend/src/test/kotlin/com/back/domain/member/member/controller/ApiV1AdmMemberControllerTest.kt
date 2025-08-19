@@ -151,7 +151,7 @@ class ApiV1AdmMemberControllerTest {
             )
             .andDo(MockMvcResultHandlers.print())
 
-        val memberPage = memberService.findBySearchPaged(MemberSearchKeywordType.username, "user", 1, 3)
+        val memberPage = memberService.findBySearchPaged(MemberSearchKeywordType.USERNAME, "user", 1, 3)
 
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1AdmMemberController::class.java))

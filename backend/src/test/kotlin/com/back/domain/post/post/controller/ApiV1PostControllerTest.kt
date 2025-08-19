@@ -515,7 +515,7 @@ class ApiV1PostControllerTest {
             .andDo(MockMvcResultHandlers.print())
 
         val postPage = postService
-            .findBySearchPaged(PostSearchKeywordType.title, "축구", 1, 3)
+            .findBySearchPaged(PostSearchKeywordType.TITLE, "축구", 1, 3)
 
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostController::class.java))
@@ -547,16 +547,16 @@ class ApiV1PostControllerTest {
     }
 
     @Test
-    @DisplayName("다건 조회 with keywordType=content&keyword=18명")
+    @DisplayName("다건 조회 with keywordType=CONTENT&keyword=18명")
     fun t19() {
         val resultActions = mvc
             .perform(
-                MockMvcRequestBuilders.get("/api/v1/posts?page=1&pageSize=3&keywordType=content&keyword=18명")
+                MockMvcRequestBuilders.get("/api/v1/posts?page=1&pageSize=3&keywordType=CONTENT&keyword=18명")
             )
             .andDo(MockMvcResultHandlers.print())
 
         val postPage = postService
-            .findBySearchPaged(PostSearchKeywordType.content, "18명", 1, 3)
+            .findBySearchPaged(PostSearchKeywordType.CONTENT, "18명", 1, 3)
 
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostController::class.java))

@@ -45,9 +45,9 @@ class PostRepositoryImpl(
 
     private fun applyKeywordFilter(kwType: PostSearchKeywordType, kw: String, builder: BooleanBuilder) {
         when (kwType) {
-            PostSearchKeywordType.title -> builder.and(QPost.post.title.containsIgnoreCase(kw))
-            PostSearchKeywordType.content -> builder.and(QPost.post.content.containsIgnoreCase(kw))
-            PostSearchKeywordType.author -> builder.and(QPost.post.author.nickname.containsIgnoreCase(kw))
+            PostSearchKeywordType.TITLE -> builder.and(QPost.post.title.containsIgnoreCase(kw))
+            PostSearchKeywordType.CONTENT -> builder.and(QPost.post.content.containsIgnoreCase(kw))
+            PostSearchKeywordType.AUTHOR -> builder.and(QPost.post.author.nickname.containsIgnoreCase(kw))
             else -> builder.and(
                 QPost.post.title.containsIgnoreCase(kw)
                     .or(QPost.post.content.containsIgnoreCase(kw))
