@@ -10,7 +10,7 @@ import java.util.*
 @Entity
 class Member(
     id: Int,
-    @field:Column(unique = true) var username: String,
+    @field:Column(unique = true) val username: String,
     var password: String? = null,
     var nickname: String,
     @field:Column(unique = true) var apiKey: String,
