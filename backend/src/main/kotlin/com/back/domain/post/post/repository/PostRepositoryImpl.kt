@@ -2,12 +2,10 @@ package com.back.domain.post.post.repository
 
 import com.back.domain.post.post.entity.Post
 import com.back.domain.post.post.entity.QPost
+import com.back.standard.extensions.getOrThrow
 import com.back.standard.search.PostSearchKeywordType
+import com.back.standard.util.QueryDslUtil
 import com.querydsl.core.BooleanBuilder
-import com.querydsl.core.types.Expression
-import com.querydsl.core.types.Order
-import com.querydsl.core.types.OrderSpecifier
-import com.querydsl.core.types.dsl.PathBuilder
 import com.querydsl.jpa.impl.JPAQuery
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.data.domain.Page
@@ -40,7 +38,7 @@ class PostRepositoryImpl(
         // total
         val totalQuery = createTotalQuery(builder)
 
-        return PageableExecutionUtils.getPage(postsQuery.fetch(), pageable) { totalQuery.fetchOne()!! }
+        return PageableExecutionUtils.getPage(postsQuery.fetch(), pageable) { totalQuery.fetchOne().getOrThrow() }
     }
 
     private fun applyKeywordFilter(kwType: PostSearchKeywordType, kw: String, builder: BooleanBuilder) {
@@ -48,7 +46,7 @@ class PostRepositoryImpl(
             PostSearchKeywordType.TITLE -> builder.and(QPost.post.title.containsIgnoreCase(kw))
             PostSearchKeywordType.CONTENT -> builder.and(QPost.post.content.containsIgnoreCase(kw))
             PostSearchKeywordType.AUTHOR -> builder.and(QPost.post.author.nickname.containsIgnoreCase(kw))
-            else -> builder.and(
+            PostSearchKeywordType.ALL -> builder.and(
                 QPost.post.title.containsIgnoreCase(kw)
                     .or(QPost.post.content.containsIgnoreCase(kw))
                     .or(QPost.post.author.nickname.containsIgnoreCase(kw))
@@ -63,15 +61,14 @@ class PostRepositoryImpl(
     }
 
     private fun applySorting(pageable: Pageable, postsQuery: JPAQuery<Post>) {
-        for (o in pageable.sort) {
-            val pathBuilder: PathBuilder<*> = PathBuilder<Any?>(QPost.post.type, QPost.post.metadata)
-
-            postsQuery.orderBy(
-                OrderSpecifier(
-                    if (o.isAscending) Order.ASC else Order.DESC,
-                    pathBuilder[o.property] as Expression<Comparable<*>>
-                )
-            )
+        QueryDslUtil.applySorting(postsQuery, pageable) {
+            when (it) {
+                "id" -> QPost.post.id
+                "title" -> QPost.post.title
+                "content" -> QPost.post.content
+                "author" -> QPost.post.author.nickname
+                else -> null
+            }
         }
     }
 

@@ -40,11 +40,11 @@ class MemberRepositoryImpl(
 
     private fun applyKeywordFilter(kwType: MemberSearchKeywordType, kw: String, builder: BooleanBuilder) {
         when (kwType) {
-            MemberSearchKeywordType.USERNAME -> builder.and(QMember.member.username.containsIgnoreCase(kw))
-            MemberSearchKeywordType.NICKNAME -> builder.and(QMember.member.nickname.containsIgnoreCase(kw))
-            else -> builder.and(
-                QMember.member.username.containsIgnoreCase(kw)
-                    .or(QMember.member.nickname.containsIgnoreCase(kw))
+            MemberSearchKeywordType.USERNAME -> builder.and(member.username.containsIgnoreCase(kw))
+            MemberSearchKeywordType.NICKNAME -> builder.and(member.nickname.containsIgnoreCase(kw))
+            MemberSearchKeywordType.ALL -> builder.and(
+                member.username.containsIgnoreCase(kw)
+                    .or(member.nickname.containsIgnoreCase(kw))
             )
         }
     }
