@@ -6,6 +6,8 @@ import com.back.global.exception.ServiceException
 import com.back.global.rsData.RsData
 import com.back.standard.search.MemberSearchKeywordType
 import com.back.standard.search.MemberSearchKeywordType.USERNAME
+import com.back.standard.search.MemberSearchSortType
+import com.back.standard.search.MemberSearchSortType.ID
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
@@ -69,10 +71,20 @@ class MemberService(
 
     private fun modify(member: Member, nickname: String, profileImgUrl: String) = member.modify(nickname, profileImgUrl)
 
-    fun findBySearchPaged(keywordType: MemberSearchKeywordType = USERNAME, keyword: String = "", page: Int = 1, pageSize: Int = 10): Page<Member> {
+    fun findBySearchPaged(
+        keywordType: MemberSearchKeywordType = USERNAME,
+        keyword: String = "",
+        page: Int = 1,
+        pageSize: Int = 10,
+        sort: MemberSearchSortType = ID
+    ): Page<Member> {
         val pageSize = if (pageSize in 1..50) pageSize else 10
         val page = if (page > 0) page else 1
-        val pageable = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Order.desc("id")))
+        val pageable = PageRequest.of(
+            page - 1,
+            pageSize,
+            Sort.by(if (sort.isAsc) Sort.Direction.ASC else Sort.Direction.DESC, sort.property)
+        )
         return memberRepository.findByKeyword(keywordType, keyword, pageable)
     }
 }

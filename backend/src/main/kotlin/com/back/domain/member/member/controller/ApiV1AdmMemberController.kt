@@ -5,6 +5,7 @@ import com.back.domain.member.member.service.MemberService
 import com.back.standard.extensions.getOrThrow
 import com.back.standard.page.dto.PageDto
 import com.back.standard.search.MemberSearchKeywordType
+import com.back.standard.search.MemberSearchSortType
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -26,9 +27,10 @@ class ApiV1AdmMemberController(
         @RequestParam(defaultValue = "ALL") keywordType: MemberSearchKeywordType,
         @RequestParam(defaultValue = "") keyword: String,
         @RequestParam(defaultValue = "1") page: Int,
-        @RequestParam(defaultValue = "10") pageSize: Int
+        @RequestParam(defaultValue = "10") pageSize: Int,
+        @RequestParam(defaultValue = "ID") sort: MemberSearchSortType
     ): PageDto<MemberWithUsernameDto> {
-        val members = memberService.findBySearchPaged(keywordType, keyword, page, pageSize)
+        val members = memberService.findBySearchPaged(keywordType, keyword, page, pageSize, sort)
 
         return PageDto(members.map { MemberWithUsernameDto(it) })
     }
