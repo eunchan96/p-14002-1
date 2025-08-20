@@ -5,11 +5,8 @@ import com.back.domain.member.member.entity.QMember
 import com.back.domain.member.member.entity.QMember.member
 import com.back.standard.extensions.getOrThrow
 import com.back.standard.search.MemberSearchKeywordType
+import com.back.standard.util.QueryDslUtil
 import com.querydsl.core.BooleanBuilder
-import com.querydsl.core.types.Expression
-import com.querydsl.core.types.Order
-import com.querydsl.core.types.OrderSpecifier
-import com.querydsl.core.types.dsl.PathBuilder
 import com.querydsl.jpa.impl.JPAQuery
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.data.domain.Page
@@ -59,15 +56,13 @@ class MemberRepositoryImpl(
     }
 
     private fun applySorting(pageable: Pageable, membersQuery: JPAQuery<Member>) {
-        for (o in pageable.sort) {
-            val pathBuilder: PathBuilder<*> = PathBuilder<Any?>(QMember.member.type, QMember.member.metadata)
-
-            membersQuery.orderBy(
-                OrderSpecifier(
-                    if (o.isAscending) Order.ASC else Order.DESC,
-                    pathBuilder[o.property] as Expression<Comparable<*>>
-                )
-            )
+        QueryDslUtil.applySorting(membersQuery, pageable) {
+            when (it) {
+                "id" -> member.id
+                "username" -> member.username
+                "nickname" -> member.nickname
+                else -> null
+            }
         }
     }
 
@@ -169,19 +164,15 @@ class MemberRepositoryImpl(
             .where(member.username.contains(username))
 
         // Apply sorting
-        pageable.sort.forEach { order ->
-            when (order.property) {
-                "id" -> query.orderBy(if (order.isAscending) member.id.asc() else member.id.desc())
-                "username" -> query.orderBy(if (order.isAscending) member.username.asc() else member.username.desc())
-                "nickname" -> query.orderBy(if (order.isAscending) member.nickname.asc() else member.nickname.desc())
-            }
-        }
+        applySorting(pageable, query)
 
+        // Apply paging
         val results = query
             .offset(pageable.offset)
             .limit(pageable.pageSize.toLong())
             .fetch()
 
+        // total
         val totalQuery = jpaQueryFactory
             .select(member.count())
             .from(member)
