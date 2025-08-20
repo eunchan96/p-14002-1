@@ -9,6 +9,7 @@ import com.back.global.rsData.RsData
 import com.back.standard.extensions.getOrThrow
 import com.back.standard.page.dto.PageDto
 import com.back.standard.search.PostSearchKeywordType
+import com.back.standard.search.PostSearchSortType
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -34,9 +35,10 @@ class ApiV1PostController(
         @RequestParam(defaultValue = "TITLE") keywordType: PostSearchKeywordType,
         @RequestParam(defaultValue = "") keyword: String,
         @RequestParam(defaultValue = "1") page: Int,
-        @RequestParam(defaultValue = "30") pageSize: Int
+        @RequestParam(defaultValue = "30") pageSize: Int,
+        @RequestParam(defaultValue = "ID") sort: PostSearchSortType
     ): PageDto<PostDto> {
-        val posts: Page<Post> = postService.findBySearchPaged(keywordType, keyword, page, pageSize)
+        val posts: Page<Post> = postService.findBySearchPaged(keywordType, keyword, page, pageSize, sort)
 
         return PageDto(posts.map { PostDto(it) })
     }

@@ -1,0 +1,30 @@
+package com.back.domain.post.post.repository
+
+import com.back.standard.search.PostSearchKeywordType
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.data.domain.PageRequest
+import org.springframework.test.context.ActiveProfiles
+import org.springframework.transaction.annotation.Transactional
+
+@ActiveProfiles("test")
+@SpringBootTest
+@AutoConfigureMockMvc
+@Transactional
+class PostRepositoryTest {
+    @Autowired
+    private lateinit var postRepository: PostRepository
+
+    @Test
+    @DisplayName("findByKeyword")
+    fun t1() {
+        val pageable = PageRequest.of(0, 10)
+        val result = postRepository.findByKeyword(PostSearchKeywordType.TITLE,"발야구", pageable)
+
+        assertThat(result.all { it.title.contains("발야구") }).isTrue
+    }
+}
