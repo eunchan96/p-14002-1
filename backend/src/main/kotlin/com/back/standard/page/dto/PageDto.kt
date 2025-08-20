@@ -2,18 +2,30 @@ package com.back.standard.page.dto
 
 import org.springframework.data.domain.Page
 
-data class PageDto<T>(
+class PageableDto(
     val currentPageNumber: Int,
     val pageSize: Int,
-    val totalPages: Long,
-    val totalItems: Long,
-    val items: List<T>
+    val totalPages: Int,
+    val totalElements: Long,
+    val numberOfElements: Int,
+    val offset: Long,
+    val isSorted: Boolean
+)
+
+data class PageDto<T>(
+    val content: List<T>,
+    val pageable: PageableDto
 ) {
     constructor(page: Page<T>) : this(
-        currentPageNumber = page.number + 1,
-        pageSize = page.size,
-        totalPages = page.totalPages.toLong(),
-        totalItems = page.totalElements,
-        items = page.content
+        page.content,
+        PageableDto(
+            page.number + 1,
+            page.size,
+            page.totalPages,
+            page.totalElements,
+            page.numberOfElements,
+            page.pageable.offset,
+            page.pageable.sort.isSorted
+        )
     )
 }

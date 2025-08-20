@@ -12,7 +12,7 @@ export interface paths {
             cookie?: never;
         };
         /** 단건 조회 */
-        get: operations["getItem"];
+        get: operations["item"];
         /** 수정 */
         put: operations["modify"];
         post?: never;
@@ -31,7 +31,7 @@ export interface paths {
             cookie?: never;
         };
         /** 단건 조회 */
-        get: operations["getItem_1"];
+        get: operations["item_1"];
         /** 수정 */
         put: operations["modify_1"];
         post?: never;
@@ -50,7 +50,7 @@ export interface paths {
             cookie?: never;
         };
         /** 다건 조회 */
-        get: operations["getItems"];
+        get: operations["items"];
         put?: never;
         /** 작성 */
         post: operations["write"];
@@ -68,7 +68,7 @@ export interface paths {
             cookie?: never;
         };
         /** 다건 조회 */
-        get: operations["getItems_1"];
+        get: operations["items_1"];
         put?: never;
         /** 작성 */
         post: operations["write_1"];
@@ -154,7 +154,7 @@ export interface paths {
             cookie?: never;
         };
         /** 다건 조회 */
-        get: operations["getItems_2"];
+        get: operations["items_2"];
         put?: never;
         post?: never;
         delete?: never;
@@ -171,7 +171,7 @@ export interface paths {
             cookie?: never;
         };
         /** 단건 조회 */
-        get: operations["getItem_2"];
+        get: operations["item_2"];
         put?: never;
         post?: never;
         delete?: never;
@@ -269,8 +269,8 @@ export interface components {
             /** Format: date-time */
             modifyDate: string;
             name: string;
-            profileImageUrl: string;
             isAdmin: boolean;
+            profileImageUrl: string;
         };
         RsDataMemberDto: {
             resultCode: string;
@@ -290,6 +290,25 @@ export interface components {
             resultCode: string;
             msg: string;
             data: components["schemas"]["MemberLoginResBody"];
+        };
+        PageDtoPostDto: {
+            items: components["schemas"]["PostDto"][];
+            pageable: components["schemas"]["PageableDto"];
+        };
+        PageableDto: {
+            /** Format: int32 */
+            currentPageNumber: number;
+            /** Format: int32 */
+            pageSize: number;
+            /** Format: int32 */
+            totalPages: number;
+            /** Format: int64 */
+            totalElements: number;
+            /** Format: int32 */
+            numberOfElements: number;
+            /** Format: int64 */
+            offset: number;
+            isSorted: boolean;
         };
         PostWithContentDto: {
             /** Format: int32 */
@@ -312,13 +331,17 @@ export interface components {
             /** Format: date-time */
             modifyDate: string;
             name: string;
-            profileImageUrl: string;
             username: string;
             isAdmin: boolean;
+            profileImageUrl: string;
         };
         AdmPostCountResBody: {
             /** Format: int64 */
             all: number;
+        };
+        PageDtoMemberWithUsernameDto: {
+            items: components["schemas"]["MemberWithUsernameDto"][];
+            pageable: components["schemas"]["PageableDto"];
         };
     };
     responses: never;
@@ -329,7 +352,7 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
-    getItem: {
+    item: {
         parameters: {
             query?: never;
             header?: never;
@@ -429,7 +452,7 @@ export interface operations {
             };
         };
     };
-    getItem_1: {
+    item_1: {
         parameters: {
             query?: never;
             header?: never;
@@ -526,9 +549,14 @@ export interface operations {
             };
         };
     };
-    getItems: {
+    items: {
         parameters: {
-            query?: never;
+            query?: {
+                keywordType?: "ALL" | "TITLE" | "CONTENT" | "AUTHOR";
+                keyword?: string;
+                page?: number;
+                pageSize?: number;
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -541,7 +569,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json;charset=UTF-8": components["schemas"]["PostDto"][];
+                    "application/json;charset=UTF-8": components["schemas"]["PageDtoPostDto"];
                 };
             };
             /** @description Bad Request */
@@ -588,7 +616,7 @@ export interface operations {
             };
         };
     };
-    getItems_1: {
+    items_1: {
         parameters: {
             query?: never;
             header?: never;
@@ -778,9 +806,14 @@ export interface operations {
             };
         };
     };
-    getItems_2: {
+    items_2: {
         parameters: {
-            query?: never;
+            query?: {
+                keywordType?: "ALL" | "USERNAME" | "NICKNAME";
+                keyword?: string;
+                page?: number;
+                pageSize?: number;
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -793,7 +826,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json;charset=UTF-8": components["schemas"]["MemberWithUsernameDto"][];
+                    "application/json;charset=UTF-8": components["schemas"]["PageDtoMemberWithUsernameDto"];
                 };
             };
             /** @description Bad Request */
@@ -807,7 +840,7 @@ export interface operations {
             };
         };
     };
-    getItem_2: {
+    item_2: {
         parameters: {
             query?: never;
             header?: never;

@@ -70,6 +70,8 @@ class MemberService(
     private fun modify(member: Member, nickname: String, profileImgUrl: String) = member.modify(nickname, profileImgUrl)
 
     fun findBySearchPaged(keywordType: MemberSearchKeywordType = USERNAME, keyword: String = "", page: Int = 1, pageSize: Int = 10): Page<Member> {
+        val pageSize = if (pageSize in 1..50) pageSize else 10
+        val page = if (page > 0) page else 1
         val pageable = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Order.desc("id")))
         return memberRepository.findByKeyword(keywordType, keyword, pageable)
     }

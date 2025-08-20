@@ -478,30 +478,33 @@ class ApiV1PostControllerTest {
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("items"))
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.totalItems").value(postPage.totalElements))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.totalPages").value(postPage.totalPages))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.currentPageNumber").value(1))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.pageSize").value(30))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.currentPageNumber").value(1))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.pageSize").value(30))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.totalPages").value(postPage.totalPages))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.totalElements").value(postPage.totalElements))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.numberOfElements").value(postPage.numberOfElements))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.offset").value(postPage.pageable.offset))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.isSorted").value(postPage.pageable.sort.isSorted))
 
         val posts = postPage.content
         resultActions
-            .andExpect(MockMvcResultMatchers.jsonPath("$.items.length()").value(posts.size))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content.length()").value(posts.size))
 
         for (i in posts.indices) {
             val post = posts[i]
             resultActions
-                .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].id").value(post.id))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].id").value(post.id))
                 .andExpect(
-                    MockMvcResultMatchers.jsonPath("$.items[$i].createDate")
+                    MockMvcResultMatchers.jsonPath("$.content[$i].createDate")
                         .value(Matchers.startsWith(post.createDate.toString().take(20)))
                 )
                 .andExpect(
-                    MockMvcResultMatchers.jsonPath("$.items[$i].modifyDate")
+                    MockMvcResultMatchers.jsonPath("$.content[$i].modifyDate")
                         .value(Matchers.startsWith(post.modifyDate.toString().take(20)))
                 )
-                .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].authorId").value(post.author.id))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].authorName").value(post.author.nickname))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].title").value(post.title))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].authorId").value(post.author.id))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].authorName").value(post.author.nickname))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].title").value(post.title))
         }
     }
 
@@ -521,28 +524,33 @@ class ApiV1PostControllerTest {
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("items"))
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.totalItems").value(postPage.totalElements))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.totalPages").value(postPage.totalPages))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.currentPageNumber").value(1))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.pageSize").value(3))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.currentPageNumber").value(1))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.pageSize").value(3))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.totalPages").value(postPage.totalPages))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.totalElements").value(postPage.totalElements))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.numberOfElements").value(postPage.numberOfElements))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.offset").value(postPage.pageable.offset))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.isSorted").value(postPage.pageable.sort.isSorted))
 
         val posts = postPage.content
+        resultActions
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content.length()").value(posts.size))
 
         for (i in posts.indices) {
             val post = posts[i]
             resultActions
-                .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].id").value(post.id))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].id").value(post.id))
                 .andExpect(
-                    MockMvcResultMatchers.jsonPath("$.items[$i].createDate")
+                    MockMvcResultMatchers.jsonPath("$.content[$i].createDate")
                         .value(Matchers.startsWith(post.createDate.toString().take(20)))
                 )
                 .andExpect(
-                    MockMvcResultMatchers.jsonPath("$.items[$i].modifyDate")
+                    MockMvcResultMatchers.jsonPath("$.content[$i].modifyDate")
                         .value(Matchers.startsWith(post.modifyDate.toString().take(20)))
                 )
-                .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].authorId").value(post.author.id))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].authorName").value(post.author.nickname))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].title").value(post.title))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].authorId").value(post.author.id))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].authorName").value(post.author.nickname))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].title").value(post.title))
         }
     }
 
@@ -562,28 +570,33 @@ class ApiV1PostControllerTest {
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("items"))
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.totalItems").value(postPage.totalElements))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.totalPages").value(postPage.totalPages))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.currentPageNumber").value(1))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.pageSize").value(3))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.currentPageNumber").value(1))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.pageSize").value(3))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.totalPages").value(postPage.totalPages))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.totalElements").value(postPage.totalElements))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.numberOfElements").value(postPage.numberOfElements))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.offset").value(postPage.pageable.offset))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.isSorted").value(postPage.pageable.sort.isSorted))
 
         val posts = postPage.content
+        resultActions
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content.length()").value(posts.size))
 
         for (i in posts.indices) {
             val post = posts[i]
             resultActions
-                .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].id").value(post.id))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].id").value(post.id))
                 .andExpect(
-                    MockMvcResultMatchers.jsonPath("$.items[$i].createDate")
+                    MockMvcResultMatchers.jsonPath("$.content[$i].createDate")
                         .value(Matchers.startsWith(post.createDate.toString().take(20)))
                 )
                 .andExpect(
-                    MockMvcResultMatchers.jsonPath("$.items[$i].modifyDate")
+                    MockMvcResultMatchers.jsonPath("$.content[$i].modifyDate")
                         .value(Matchers.startsWith(post.modifyDate.toString().take(20)))
                 )
-                .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].authorId").value(post.author.id))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].authorName").value(post.author.name))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].title").value(post.title))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].authorId").value(post.author.id))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].authorName").value(post.author.name))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].title").value(post.title))
         }
     }
 }

@@ -44,6 +44,8 @@ class PostService(
     fun flush() = postRepository.flush()
 
     fun findBySearchPaged(keywordType: PostSearchKeywordType = TITLE, keyword: String = "", page: Int = 1, pageSize: Int = 30): Page<Post> {
+        val pageSize = if (pageSize in 1..100) pageSize else 30
+        val page = if (page > 0) page else 1
         val pageable = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Order.desc("id")))
         return postRepository.findByKeyword(keywordType, keyword, pageable)
     }

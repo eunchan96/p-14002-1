@@ -45,30 +45,33 @@ class ApiV1AdmMemberControllerTest {
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1AdmMemberController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("items"))
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.totalItems").value(memberPage.totalElements))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.totalPages").value(memberPage.totalPages))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.currentPageNumber").value(1))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.pageSize").value(10))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.currentPageNumber").value(1))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.pageSize").value(10))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.totalPages").value(memberPage.totalPages))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.totalElements").value(memberPage.totalElements))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.numberOfElements").value(memberPage.numberOfElements))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.offset").value(memberPage.pageable.offset))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.isSorted").value(memberPage.pageable.sort.isSorted))
 
         val members = memberPage.content
         resultActions
-            .andExpect(MockMvcResultMatchers.jsonPath("$.items.length()").value(members.size))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content.length()").value(members.size))
 
         for (i in members.indices) {
             val member = members[i]
             resultActions
-                .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].id").value(member.id))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].id").value(member.id))
                 .andExpect(
-                    MockMvcResultMatchers.jsonPath("$.items[$i].createDate")
+                    MockMvcResultMatchers.jsonPath("$.content[$i].createDate")
                         .value(Matchers.startsWith(member.createDate.toString().take(20)))
                 )
                 .andExpect(
-                    MockMvcResultMatchers.jsonPath("$.items[$i].modifyDate")
+                    MockMvcResultMatchers.jsonPath("$.content[$i].modifyDate")
                         .value(Matchers.startsWith(member.modifyDate.toString().take(20)))
                 )
-                .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].name").value(member.name))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].username").value(member.username))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].isAdmin").value(member.isAdmin))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].name").value(member.name))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].username").value(member.username))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].isAdmin").value(member.isAdmin))
         }
     }
 
@@ -157,28 +160,33 @@ class ApiV1AdmMemberControllerTest {
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1AdmMemberController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("items"))
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.totalItems").value(memberPage.totalElements))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.totalPages").value(memberPage.totalPages))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.currentPageNumber").value(1))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.pageSize").value(3))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.currentPageNumber").value(1))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.pageSize").value(3))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.totalPages").value(memberPage.totalPages))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.totalElements").value(memberPage.totalElements))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.numberOfElements").value(memberPage.numberOfElements))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.offset").value(memberPage.pageable.offset))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.isSorted").value(memberPage.pageable.sort.isSorted))
 
         val members = memberPage.content
+        resultActions
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content.length()").value(members.size))
 
         for (i in members.indices) {
             val member = members[i]
             resultActions
-                .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].id").value(member.id))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].id").value(member.id))
                 .andExpect(
-                    MockMvcResultMatchers.jsonPath("$.items[$i].createDate")
+                    MockMvcResultMatchers.jsonPath("$.content[$i].createDate")
                         .value(Matchers.startsWith(member.createDate.toString().take(20)))
                 )
                 .andExpect(
-                    MockMvcResultMatchers.jsonPath("$.items[$i].modifyDate")
+                    MockMvcResultMatchers.jsonPath("$.content[$i].modifyDate")
                         .value(Matchers.startsWith(member.modifyDate.toString().take(20)))
                 )
-                .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].name").value(member.name))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].username").value(member.username))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.items[$i].isAdmin").value(member.isAdmin))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].name").value(member.name))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].username").value(member.username))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].isAdmin").value(member.isAdmin))
         }
     }
 }
