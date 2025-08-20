@@ -4,5 +4,5 @@ enum class PostSearchKeywordType {
     ALL,
     TITLE,
     CONTENT,
-    AUTHOR;
+    AUTHOR_NAME;
 }

@@ -10,7 +10,6 @@ import com.back.standard.search.MemberSearchSortType
 import com.back.standard.search.MemberSearchSortType.ID
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Sort
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
@@ -80,11 +79,7 @@ class MemberService(
     ): Page<Member> {
         val pageSize = if (pageSize in 1..50) pageSize else 10
         val page = if (page > 0) page else 1
-        val pageable = PageRequest.of(
-            page - 1,
-            pageSize,
-            Sort.by(if (sort.isAsc) Sort.Direction.ASC else Sort.Direction.DESC, sort.property)
-        )
+        val pageable = PageRequest.of(page - 1, pageSize, sort.sortBy)
         return memberRepository.findByKeyword(keywordType, keyword, pageable)
     }
 }

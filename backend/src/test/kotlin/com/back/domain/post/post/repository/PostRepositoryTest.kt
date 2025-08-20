@@ -1,5 +1,6 @@
 package com.back.domain.post.post.repository
 
+import com.back.standard.search.MemberSearchSortType
 import com.back.standard.search.PostSearchKeywordType
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
@@ -26,5 +27,16 @@ class PostRepositoryTest {
         val result = postRepository.findByKeyword(PostSearchKeywordType.TITLE,"발야구", pageable)
 
         assertThat(result.all { it.title.contains("발야구") }).isTrue
+    }
+
+    @Test
+    @DisplayName("findByKeyword - sortByAsc")
+    fun t2() {
+        val pageable = PageRequest.of(0, 10, MemberSearchSortType.USERNAME_ASC.sortBy)
+        val result = postRepository.findByKeyword(PostSearchKeywordType.TITLE,"발야구", pageable).content
+
+        for (i in 0 until result.size - 1) {
+            assertThat(result[i].title).isLessThan(result[i + 1].title)
+        }
     }
 }

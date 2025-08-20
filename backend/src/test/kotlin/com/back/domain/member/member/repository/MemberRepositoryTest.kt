@@ -1,6 +1,7 @@
 package com.back.domain.member.member.repository
 
 import com.back.standard.search.MemberSearchKeywordType
+import com.back.standard.search.MemberSearchSortType
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -26,5 +27,16 @@ class MemberRepositoryTest {
         val result = memberRepository.findByKeyword(MemberSearchKeywordType.USERNAME,"user", pageable)
 
         assertThat(result.all { it.username.contains("user") }).isTrue
+    }
+
+    @Test
+    @DisplayName("findByKeyword - sortByAsc")
+    fun t2() {
+        val pageable = PageRequest.of(0, 10, MemberSearchSortType.USERNAME_ASC.sortBy)
+        val result = memberRepository.findByKeyword(MemberSearchKeywordType.USERNAME,"user", pageable).content
+
+        for (i in 0 until result.size - 1) {
+            assertThat(result[i].username).isLessThan(result[i + 1].username)
+        }
     }
 }

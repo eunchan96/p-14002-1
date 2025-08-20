@@ -1,7 +1,7 @@
 package com.back.domain.post.post.repository
 
 import com.back.domain.post.post.entity.Post
-import com.back.domain.post.post.entity.QPost
+import com.back.domain.post.post.entity.QPost.post
 import com.back.standard.extensions.getOrThrow
 import com.back.standard.search.PostSearchKeywordType
 import com.back.standard.util.QueryDslUtil
@@ -43,30 +43,30 @@ class PostRepositoryImpl(
 
     private fun applyKeywordFilter(kwType: PostSearchKeywordType, kw: String, builder: BooleanBuilder) {
         when (kwType) {
-            PostSearchKeywordType.TITLE -> builder.and(QPost.post.title.containsIgnoreCase(kw))
-            PostSearchKeywordType.CONTENT -> builder.and(QPost.post.content.containsIgnoreCase(kw))
-            PostSearchKeywordType.AUTHOR -> builder.and(QPost.post.author.nickname.containsIgnoreCase(kw))
+            PostSearchKeywordType.TITLE -> builder.and(post.title.containsIgnoreCase(kw))
+            PostSearchKeywordType.CONTENT -> builder.and(post.content.containsIgnoreCase(kw))
+            PostSearchKeywordType.AUTHOR_NAME -> builder.and(post.author.nickname.containsIgnoreCase(kw))
             PostSearchKeywordType.ALL -> builder.and(
-                QPost.post.title.containsIgnoreCase(kw)
-                    .or(QPost.post.content.containsIgnoreCase(kw))
-                    .or(QPost.post.author.nickname.containsIgnoreCase(kw))
+                post.title.containsIgnoreCase(kw)
+                    .or(post.content.containsIgnoreCase(kw))
+                    .or(post.author.nickname.containsIgnoreCase(kw))
             )
         }
     }
 
     private fun createPostsQuery(builder: BooleanBuilder): JPAQuery<Post> {
         return jpaQueryFactory
-            .selectFrom(QPost.post)
+            .selectFrom(post)
             .where(builder)
     }
 
     private fun applySorting(pageable: Pageable, postsQuery: JPAQuery<Post>) {
         QueryDslUtil.applySorting(postsQuery, pageable) {
             when (it) {
-                "id" -> QPost.post.id
-                "title" -> QPost.post.title
-                "content" -> QPost.post.content
-                "author" -> QPost.post.author.nickname
+                "id" -> post.id
+                "title" -> post.title
+                "content" -> post.content
+                "author" -> post.author.nickname
                 else -> null
             }
         }
@@ -74,8 +74,8 @@ class PostRepositoryImpl(
 
     private fun createTotalQuery(builder: BooleanBuilder): JPAQuery<Long> {
         return jpaQueryFactory
-            .select(QPost.post.count())
-            .from(QPost.post)
+            .select(post.count())
+            .from(post)
             .where(builder)
     }
 }

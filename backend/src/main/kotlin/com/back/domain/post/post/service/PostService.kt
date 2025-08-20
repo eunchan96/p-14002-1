@@ -10,7 +10,6 @@ import com.back.standard.search.PostSearchSortType
 import com.back.standard.search.PostSearchSortType.ID
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 
 @Service
@@ -54,11 +53,7 @@ class PostService(
     ): Page<Post> {
         val pageSize = if (pageSize in 1..100) pageSize else 30
         val page = if (page > 0) page else 1
-        val pageable = PageRequest.of(
-            page - 1,
-            pageSize,
-            Sort.by(if (sort.isAsc) Sort.Direction.ASC else Sort.Direction.DESC, sort.property)
-        )
+        val pageable = PageRequest.of(page - 1, pageSize, sort.sortBy)
         return postRepository.findByKeyword(keywordType, keyword, pageable)
     }
 }
