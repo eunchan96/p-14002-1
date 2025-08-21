@@ -26,7 +26,7 @@ class PostRepositoryTest {
         val pageable = PageRequest.of(0, 10)
         val result = postRepository.findByKeyword(PostSearchKeywordType.TITLE,"발야구", pageable)
 
-        assertThat(result.all { it.title.contains("발야구") }).isTrue
+        assertThat(result).allMatch { it.title.contains("발야구") }
     }
 
     @Test
@@ -46,7 +46,7 @@ class PostRepositoryTest {
         val pageable = PageRequest.of(0, 10)
         val result = postRepository.findByKeyword(PostSearchKeywordType.AUTHOR_NAME,"유저", pageable).content
 
-        assertThat(result.all { it.author.name.contains("유저") }).isTrue
-        assertThat(result.all { it.author.name.contains("시스템") || it.author.name.contains("관리자") }).isFalse
+        assertThat(result).allMatch { it.author.name.contains("유저") }
+        assertThat(result).noneMatch { it.author.name.contains("시스템") || it.author.name.contains("관리자") }
     }
 }
