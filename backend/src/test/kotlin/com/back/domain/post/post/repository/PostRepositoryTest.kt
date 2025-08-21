@@ -39,4 +39,14 @@ class PostRepositoryTest {
             assertThat(result[i].title).isLessThan(result[i + 1].title)
         }
     }
+
+    @Test
+    @DisplayName("findByKeyword - searchByAuthor")
+    fun t3() {
+        val pageable = PageRequest.of(0, 10)
+        val result = postRepository.findByKeyword(PostSearchKeywordType.AUTHOR_NAME,"유저", pageable).content
+
+        assertThat(result.all { it.author.name.contains("유저") }).isTrue
+        assertThat(result.all { it.author.name.contains("시스템") || it.author.name.contains("관리자") }).isFalse
+    }
 }
