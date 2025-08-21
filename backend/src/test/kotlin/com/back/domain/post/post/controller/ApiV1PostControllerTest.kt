@@ -4,6 +4,7 @@ import com.back.domain.member.member.service.MemberService
 import com.back.domain.post.post.service.PostService
 import com.back.standard.extensions.getOrThrow
 import com.back.standard.search.PostSearchKeywordType
+import com.back.standard.search.PostSearchSortType
 import jakarta.servlet.http.Cookie
 import org.hamcrest.Matchers
 import org.junit.jupiter.api.DisplayName
@@ -596,6 +597,52 @@ class ApiV1PostControllerTest {
                 )
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].authorId").value(post.author.id))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].authorName").value(post.author.name))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].title").value(post.title))
+        }
+    }
+
+    @Test
+    @DisplayName("글 다건조회 - with keyword=발야구&sort=AUTHOR_NAME_ASC")
+    @Throws(Exception::class)
+    fun t20() {
+        val resultActions = mvc
+            .perform(
+                MockMvcRequestBuilders.get("/api/v1/posts?page=1&pageSize=30&keywordType=TITLE&keyword=발야구&sort=AUTHOR_NAME_ASC")
+            )
+            .andDo(MockMvcResultHandlers.print())
+
+        val postPage = postService.findBySearchPaged(PostSearchKeywordType.TITLE, "발야구", 1, 30, PostSearchSortType.AUTHOR_NAME_ASC)
+
+        resultActions
+            .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1PostController::class.java))
+            .andExpect(MockMvcResultMatchers.handler().methodName("items"))
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.currentPageNumber").value(1))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.pageSize").value(30))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.totalPages").value(postPage.totalPages))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.totalElements").value(postPage.totalElements))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.numberOfElements").value(postPage.numberOfElements))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.offset").value(postPage.pageable.offset))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.pageable.isSorted").value(postPage.pageable.sort.isSorted))
+
+        val posts = postPage.content
+        resultActions
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content.length()").value(posts.size))
+
+        for (i in posts.indices) {
+            val post = posts[i]
+            resultActions
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].id").value(post.id))
+                .andExpect(
+                    MockMvcResultMatchers.jsonPath("$.content[$i].createDate")
+                        .value(Matchers.startsWith(post.createDate.toString().take(20)))
+                )
+                .andExpect(
+                    MockMvcResultMatchers.jsonPath("$.content[$i].modifyDate")
+                        .value(Matchers.startsWith(post.modifyDate.toString().take(20)))
+                )
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].authorId").value(post.author.id))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].authorName").value(post.author.nickname))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].title").value(post.title))
         }
     }

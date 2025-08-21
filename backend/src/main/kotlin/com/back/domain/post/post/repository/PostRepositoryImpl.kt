@@ -66,7 +66,7 @@ class PostRepositoryImpl(
                 "id" -> post.id
                 "title" -> post.title
                 "content" -> post.content
-                "author" -> post.author.nickname
+                "authorName" -> post.author.nickname
                 else -> null
             }
         }
