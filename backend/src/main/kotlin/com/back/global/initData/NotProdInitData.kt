@@ -3,7 +3,6 @@ package com.back.global.initData
 import com.back.domain.member.member.service.MemberService
 import com.back.domain.post.post.service.PostService
 import com.back.global.app.CustomConfigProperties
-import com.back.global.app.CustomConfigProperties.NotProdMember
 import com.back.standard.extensions.getOrThrow
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.ApplicationArguments
@@ -13,8 +12,6 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Lazy
 import org.springframework.context.annotation.Profile
 import org.springframework.transaction.annotation.Transactional
-import java.util.function.Consumer
-import java.util.stream.IntStream
 
 @Profile("!prod")
 @Configuration
@@ -58,15 +55,15 @@ class NotProdInitData(
         memberUser5.modifyApiKey(memberUser5.username)
         memberUser6.modifyApiKey(memberUser6.username)
 
-        customConfigProperties.notProdMembers.forEach(Consumer { notProdMember: NotProdMember? ->
+        customConfigProperties.notProdMembers.forEach { notProdMember ->
             val socialMember = memberService.join(
-                notProdMember!!.username,
+                notProdMember.username,
                 null,
                 notProdMember.nickname,
                 notProdMember.profileImgUrl
             )
             socialMember.modifyApiKey(notProdMember.apiKey)
-        })
+        }
     }
 
     @Transactional
@@ -162,7 +159,7 @@ class NotProdInitData(
             "테니스 강력 추천합니다."
         )
 
-        IntStream.rangeClosed(11, 100).forEach { i: Int ->
+        (11..100).forEach { i: Int ->
             postService.write(
                 memberUser5,
                 "테스트 게시물 $i",
@@ -170,7 +167,7 @@ class NotProdInitData(
             )
         }
 
-        IntStream.rangeClosed(101, 200).forEach { i: Int ->
+        (101..200).forEach { i: Int ->
             postService.write(
                 memberUser6,
                 "테스트 게시물 $i",

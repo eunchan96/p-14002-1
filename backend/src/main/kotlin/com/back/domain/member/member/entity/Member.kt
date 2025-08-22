@@ -37,11 +37,9 @@ class Member(
     }
 
     val isAdmin: Boolean
-        get() {
-            if ("system" == username) return true
-            if ("admin" == username) return true
-
-            return false
+        get() = when (username) {
+            "system", "admin" -> true
+            else -> false
         }
 
     val authorities: List<GrantedAuthority>
