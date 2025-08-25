@@ -10,13 +10,17 @@ import jakarta.persistence.Entity
 import jakarta.persistence.FetchType.LAZY
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
+import jakarta.persistence.OneToOne
 
 @Entity
 class Post(
     @field:ManyToOne(fetch = LAZY) val author: Member,
     var title: String,
-    var content: String
+    content: String
 ) : BaseEntity() {
+    @OneToOne(fetch = LAZY, cascade = [PERSIST, REMOVE])
+    var body = PostBody(content)
+
     @OneToMany(
         mappedBy = "post",
         fetch = LAZY,
@@ -24,6 +28,12 @@ class Post(
         orphanRemoval = true
     )
     val comments: MutableList<PostComment> = mutableListOf()
+
+    var content: String
+        get() = body.content
+        set(value) {
+            body.content = value
+        }
 
     fun modify(title: String, content: String) {
         this.title = title
