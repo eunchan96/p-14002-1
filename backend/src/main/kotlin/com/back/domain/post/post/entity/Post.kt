@@ -32,7 +32,10 @@ class Post(
     var content: String
         get() = body.content
         set(value) {
-            body.content = value
+            if (body.content != value) {
+                body.content = value
+                updateModifyDate()
+            }
         }
 
     fun modify(title: String, content: String) {
