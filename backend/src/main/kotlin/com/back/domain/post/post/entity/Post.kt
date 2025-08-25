@@ -3,7 +3,7 @@ package com.back.domain.post.post.entity
 import com.back.domain.member.member.entity.Member
 import com.back.domain.post.postComment.entity.PostComment
 import com.back.global.exception.ServiceException
-import com.back.global.jpa.entity.BaseEntity
+import com.back.global.jpa.entity.BaseTime
 import jakarta.persistence.CascadeType.PERSIST
 import jakarta.persistence.CascadeType.REMOVE
 import jakarta.persistence.Entity
@@ -17,7 +17,7 @@ class Post(
     @field:ManyToOne(fetch = LAZY) val author: Member,
     var title: String,
     content: String
-) : BaseEntity() {
+) : BaseTime() {
     @OneToOne(fetch = LAZY, cascade = [PERSIST, REMOVE])
     var body = PostBody(content)
 

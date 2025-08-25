@@ -1,6 +1,6 @@
 package com.back.domain.member.member.entity
 
-import com.back.global.jpa.entity.BaseEntity
+import com.back.global.jpa.entity.BaseTime
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import org.springframework.security.core.GrantedAuthority
@@ -15,7 +15,7 @@ class Member(
     var nickname: String,
     @field:Column(unique = true) var apiKey: String,
     var profileImgUrl: String?
-) : BaseEntity(id) {
+) : BaseTime(id) {
     constructor(id: Int, username: String, nickname: String) : this(
         id, username, "", nickname, "", null
     )

@@ -3,7 +3,7 @@ package com.back.domain.post.postComment.entity
 import com.back.domain.member.member.entity.Member
 import com.back.domain.post.post.entity.Post
 import com.back.global.exception.ServiceException
-import com.back.global.jpa.entity.BaseEntity
+import com.back.global.jpa.entity.BaseTime
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType.LAZY
 import jakarta.persistence.ManyToOne
@@ -13,7 +13,7 @@ class PostComment(
     @field:ManyToOne(fetch = LAZY) val author: Member,
     @field:ManyToOne(fetch = LAZY) val post: Post,
     var content: String
-) : BaseEntity() {
+) : BaseTime() {
     fun modify(content: String) {
         this.content = content
     }
