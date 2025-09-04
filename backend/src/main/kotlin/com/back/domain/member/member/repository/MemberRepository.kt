@@ -7,8 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 
 interface MemberRepository : JpaRepository<Member, Int>, MemberRepositoryCustom {
-    fun findByUsername(username: String): Member?
-
     fun findByApiKey(apiKey: String): Member?
 
     // 실습

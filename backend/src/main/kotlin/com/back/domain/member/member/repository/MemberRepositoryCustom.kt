@@ -12,6 +12,8 @@ interface MemberRepositoryCustom {
         pageable: Pageable
     ): Page<Member>
 
+    fun findByUsername(username: String): Member?
+
     // 실습
     fun findQById(id: Int): Member?
     fun findQByUsername(username: String): Member?

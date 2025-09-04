@@ -3,6 +3,7 @@ package com.back.domain.member.member.entity
 import com.back.global.jpa.entity.BaseTime
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import org.hibernate.annotations.NaturalId
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import java.util.*
@@ -10,7 +11,7 @@ import java.util.*
 @Entity
 class Member(
     id: Int,
-    @field:Column(unique = true) val username: String,
+    @NaturalId @field:Column(unique = true) val username: String,
     var password: String? = null,
     var nickname: String,
     @field:Column(unique = true) var apiKey: String,

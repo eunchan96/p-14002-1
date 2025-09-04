@@ -9,12 +9,15 @@ import com.back.standard.util.QueryDslUtil
 import com.querydsl.core.BooleanBuilder
 import com.querydsl.jpa.impl.JPAQuery
 import com.querydsl.jpa.impl.JPAQueryFactory
+import jakarta.persistence.EntityManager
+import org.hibernate.Session
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.support.PageableExecutionUtils
 
 class MemberRepositoryImpl(
-    private val jpaQueryFactory: JPAQueryFactory
+    private val jpaQueryFactory: JPAQueryFactory,
+    private val entityManager: EntityManager
 ) : MemberRepositoryCustom {
     override fun findByKeyword(keywordType: MemberSearchKeywordType, keyword: String, pageable: Pageable): Page<Member> {
         val builder = BooleanBuilder()
@@ -71,6 +74,14 @@ class MemberRepositoryImpl(
             .select(QMember.member.count())
             .from(QMember.member)
             .where(builder)
+    }
+
+
+    override fun findByUsername(username: String): Member? {
+        return entityManager.unwrap(Session::class.java)
+            .byNaturalId(Member::class.java)
+            .using(Member::username.name, username)
+            .load()
     }
 
 

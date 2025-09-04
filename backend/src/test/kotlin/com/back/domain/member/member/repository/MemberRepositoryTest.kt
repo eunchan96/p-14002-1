@@ -1,5 +1,6 @@
 package com.back.domain.member.member.repository
 
+import com.back.standard.extensions.getOrThrow
 import com.back.standard.search.MemberSearchKeywordType
 import com.back.standard.search.MemberSearchSortType
 import org.assertj.core.api.Assertions.assertThat
@@ -38,5 +39,16 @@ class MemberRepositoryTest {
         for (i in 0 until result.size - 1) {
             assertThat(result[i].username).isLessThan(result[i + 1].username)
         }
+    }
+
+    @Test
+    @DisplayName("findByUsername cached")
+    fun t3() {
+        memberRepository.findByUsername("admin").getOrThrow() // 2번 회원 로드
+        memberRepository.findByUsername("admin").getOrThrow() // 캐시
+        memberRepository.findById(2).getOrThrow() // 캐시
+
+        memberRepository.findById(1).getOrThrow() // 1번 회원 로드
+        memberRepository.findByUsername("system").getOrThrow() // 캐시
     }
 }
