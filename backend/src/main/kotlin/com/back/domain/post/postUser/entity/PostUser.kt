@@ -6,6 +6,7 @@ import com.back.domain.post.postUser.service.PostUserAttrService
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Table
+import org.springframework.data.annotation.Immutable
 
 // Member.kt : 회원 도메인 전용 객체
 // PostUser.kt : 게시글 도메인 전용 객체
@@ -15,6 +16,7 @@ import jakarta.persistence.Table
 // DDD 에서 하나의 테이블 => N개의 엔티티 클래스
 // MSA 에서는 자연스럽게 각 MicroService 에서 필요한 엔티티만 사용
 @Entity
+@Immutable
 @Table(name = "MEMBER")
 class PostUser(
     id: Int,

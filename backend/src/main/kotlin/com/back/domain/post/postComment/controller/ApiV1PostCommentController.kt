@@ -3,6 +3,7 @@ package com.back.domain.post.postComment.controller
 import com.back.domain.post.post.service.PostService
 import com.back.domain.post.postComment.dto.PostCommentDto
 import com.back.domain.post.postUser.entity.PostUser
+import com.back.domain.post.postUser.service.PostUserService
 import com.back.global.rq.Rq
 import com.back.global.rsData.RsData
 import com.back.standard.extensions.getOrThrow
@@ -21,7 +22,8 @@ import org.springframework.web.bind.annotation.*
 @SecurityRequirement(name = "bearerAuth")
 class ApiV1PostCommentController(
     private val postService: PostService,
-    private val rq: Rq
+    private val rq: Rq,
+    private val postUserService: PostUserService
 ) {
     val actor: PostUser
         get() = PostUser(rq.actor)
@@ -109,6 +111,8 @@ class ApiV1PostCommentController(
         @PathVariable postId: Int,
         @RequestBody @Valid reqBody: PostCommentWriteReqBody
     ): RsData<PostCommentDto> {
+        val actor = postUserService.findByUsername(actor.username).getOrThrow() // 엑세스토큰에 들어있는 정보만으로는 부족해서 DB 조회
+
         val post = postService.findById(postId).getOrThrow()
         val postComment = postService.writeComment(actor, post, reqBody.content)
 
