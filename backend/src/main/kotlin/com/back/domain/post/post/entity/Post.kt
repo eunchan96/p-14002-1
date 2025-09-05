@@ -47,6 +47,8 @@ class Post(
         val postComment = PostComment(author, this, content)
         comments.add(postComment)
 
+        author.incrementPostCommentsCount()
+
         return postComment
     }
 
@@ -54,8 +56,8 @@ class Post(
         return comments.firstOrNull { it.id == id }
     }
 
-    fun deleteComment(postComment: PostComment?): Boolean {
-        if (postComment == null) return false
+    fun deleteComment(postComment: PostComment): Boolean {
+        author.decrementPostCommentsCount()
 
         return comments.remove(postComment)
     }

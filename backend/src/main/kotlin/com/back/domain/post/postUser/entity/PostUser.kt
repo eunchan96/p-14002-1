@@ -19,7 +19,9 @@ class PostUser(
     id: Int,
     username: String,
     @field:Column(name = "NICKNAME") var name: String, // NICKNAME 필드를 name 이라는 다른 필드명으로 사용 가능
-    profileImgUrl: String?
+    profileImgUrl: String? = null,
+    @field:Column(columnDefinition = "INT DEFAULT 0") var postsCount: Int = 0,
+    @field:Column(columnDefinition = "INT DEFAULT 0") var postCommentsCount: Int = 0,
 ) : BaseMember(id, username, profileImgUrl) {
     constructor(member: Member) : this(
         member.id,
@@ -27,4 +29,20 @@ class PostUser(
         member.name,
         member.profileImgUrl
     )
+
+    fun incrementPostsCount() {
+        postsCount++
+    }
+
+    fun decrementPostsCount() {
+        postsCount--
+    }
+
+    fun incrementPostCommentsCount() {
+        postCommentsCount++
+    }
+
+    fun decrementPostCommentsCount() {
+        postCommentsCount--
+    }
 }
