@@ -11,7 +11,7 @@ import java.util.*
 @Entity
 class Member(
     id: Int,
-    @NaturalId @field:Column(unique = true) val username: String,
+    @field:NaturalId @field:Column(unique = true) val username: String,
     var password: String? = null,
     var nickname: String,
     @field:Column(unique = true) var apiKey: String,
