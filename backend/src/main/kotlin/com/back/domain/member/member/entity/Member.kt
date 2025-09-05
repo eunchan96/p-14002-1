@@ -11,7 +11,7 @@ class Member(
     var password: String? = null,
     var nickname: String,
     @field:Column(unique = true) var apiKey: String,
-    profileImgUrl: String?
+    profileImgUrl: String? = null
 ) : BaseMember(id, username, profileImgUrl) {
     constructor(id: Int, username: String, nickname: String) : this(
         id, username, "", nickname, "", null
@@ -20,6 +20,8 @@ class Member(
     constructor(username: String, password: String?, nickname: String, profileImgUrl: String?) : this (
         0, username, password, nickname, UUID.randomUUID().toString(), profileImgUrl
     )
+
+    constructor(id: Int) : this(id, "", "")
 
     val name: String
         get() = nickname
