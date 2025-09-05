@@ -1,20 +1,26 @@
 package com.back.domain.post.post.service
 
+import com.back.domain.post.post.dto.PostDto
 import com.back.domain.post.post.entity.Post
 import com.back.domain.post.post.repository.PostRepository
+import com.back.domain.post.postComment.dto.PostCommentDto
 import com.back.domain.post.postComment.entity.PostComment
+import com.back.domain.post.postComment.event.PostCommentWrittenEvent
+import com.back.domain.post.postUser.dto.PostUserDto
 import com.back.domain.post.postUser.entity.PostUser
 import com.back.standard.search.PostSearchKeywordType
 import com.back.standard.search.PostSearchKeywordType.TITLE
 import com.back.standard.search.PostSearchSortType
 import com.back.standard.search.PostSearchSortType.ID
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 
 @Service
 class PostService(
-    private val postRepository: PostRepository
+    private val postRepository: PostRepository,
+    private val publisher: ApplicationEventPublisher
 ) {
     fun count(): Long {
         return postRepository.count()
@@ -34,7 +40,21 @@ class PostService(
 
     fun modify(post: Post, title: String, content: String) = post.modify(title, content)
 
-    fun writeComment(author: PostUser, post: Post, content: String): PostComment = post.addComment(author, content)
+    fun writeComment(author: PostUser, post: Post, content: String): PostComment {
+        val postComment = post.addComment(author, content)
+        flush()
+
+        publisher.publishEvent(
+            PostCommentWrittenEvent(
+                PostUserDto(author),
+                PostUserDto(post.author),
+                PostDto(post),
+                PostCommentDto(postComment)
+            )
+        )
+
+        return postComment
+    }
 
     fun deleteComment(post: Post, postComment: PostComment): Boolean = post.deleteComment(postComment)
 

@@ -80,11 +80,11 @@ class NotProdInitData(
         val post2 = postService.write(memberUser1, "제목 2", "내용 2")
         val post3 = postService.write(memberUser2, "제목 3", "내용 3")
 
-        post1.addComment(memberUser1, "댓글 1-1")
-        post1.addComment(memberUser1, "댓글 1-2")
-        post1.addComment(memberUser2, "댓글 1-3")
-        post2.addComment(memberUser3, "댓글 2-1")
-        post2.addComment(memberUser3, "댓글 2-2")
+        postService.writeComment(memberUser1, post1, "댓글 1-1")
+        postService.writeComment(memberUser1, post1, "댓글 1-2")
+        postService.writeComment(memberUser2, post1, "댓글 1-3")
+        postService.writeComment(memberUser3, post2, "댓글 2-1")
+        postService.writeComment(memberUser3, post2, "댓글 2-2")
     }
 
     @Transactional
@@ -103,16 +103,16 @@ class NotProdInitData(
             "축구 하실 분?",
             "14시 까지 22명을 모아야 합니다."
         )
-        post1.addComment(memberUser1, "대답.")
-        post1.addComment(memberUser2, "저요!")
-        post1.addComment(memberUser3, "저도 할래요.")
+        postService.writeComment(memberUser1, post1, "대답.")
+        postService.writeComment(memberUser2, post1, "저요!")
+        postService.writeComment(memberUser3, post1, "저도 할래요.")
 
         val post2 = postService.write(
             memberUser1,
             "배구 하실 분?",
             "15시 까지 12명을 모아야 합니다."
         )
-        post2.addComment(memberUser4, "저요!, 저 배구 잘합니다.")
+        postService.writeComment(memberUser4, post2, "저요!, 저 배구 잘합니다.")
 
         val post3 = postService.write(
             memberUser2,
