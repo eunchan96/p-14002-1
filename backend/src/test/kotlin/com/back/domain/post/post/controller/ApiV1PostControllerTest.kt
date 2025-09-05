@@ -74,7 +74,7 @@ class ApiV1PostControllerTest {
                     .value(Matchers.startsWith(post.modifyDate.toString().take(20)))
             )
             .andExpect(MockMvcResultMatchers.jsonPath("$.data.authorId").value(post.author.id))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.data.authorName").value(post.author.nickname))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.data.authorName").value(post.author.name))
             .andExpect(MockMvcResultMatchers.jsonPath("$.data.title").value("제목"))
     }
 
@@ -437,7 +437,7 @@ class ApiV1PostControllerTest {
                     .value(Matchers.startsWith(post.modifyDate.toString().take(20)))
             )
             .andExpect(MockMvcResultMatchers.jsonPath("$.authorId").value(post.author.id))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.authorName").value(post.author.nickname))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.authorName").value(post.author.name))
             .andExpect(MockMvcResultMatchers.jsonPath("$.title").value(post.title))
             .andExpect(MockMvcResultMatchers.jsonPath("$.content").value(post.content))
     }
@@ -504,7 +504,7 @@ class ApiV1PostControllerTest {
                         .value(Matchers.startsWith(post.modifyDate.toString().take(20)))
                 )
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].authorId").value(post.author.id))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].authorName").value(post.author.nickname))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].authorName").value(post.author.name))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].title").value(post.title))
         }
     }
@@ -550,7 +550,7 @@ class ApiV1PostControllerTest {
                         .value(Matchers.startsWith(post.modifyDate.toString().take(20)))
                 )
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].authorId").value(post.author.id))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].authorName").value(post.author.nickname))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].authorName").value(post.author.name))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].title").value(post.title))
         }
     }
@@ -642,7 +642,7 @@ class ApiV1PostControllerTest {
                         .value(Matchers.startsWith(post.modifyDate.toString().take(20)))
                 )
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].authorId").value(post.author.id))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].authorName").value(post.author.nickname))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].authorName").value(post.author.name))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[$i].title").value(post.title))
         }
     }

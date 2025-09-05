@@ -1,9 +1,9 @@
 package com.back.domain.post.post.service
 
-import com.back.domain.member.member.entity.Member
 import com.back.domain.post.post.entity.Post
 import com.back.domain.post.post.repository.PostRepository
 import com.back.domain.post.postComment.entity.PostComment
+import com.back.domain.post.postUser.entity.PostUser
 import com.back.standard.search.PostSearchKeywordType
 import com.back.standard.search.PostSearchKeywordType.TITLE
 import com.back.standard.search.PostSearchSortType
@@ -20,7 +20,7 @@ class PostService(
         return postRepository.count()
     }
 
-    fun write(author: Member, title: String, content: String): Post {
+    fun write(author: PostUser, title: String, content: String): Post {
         val post = Post(author, title, content)
 
         return postRepository.save(post)
@@ -32,7 +32,7 @@ class PostService(
 
     fun modify(post: Post, title: String, content: String) = post.modify(title, content)
 
-    fun writeComment(author: Member, post: Post, content: String): PostComment = post.addComment(author, content)
+    fun writeComment(author: PostUser, post: Post, content: String): PostComment = post.addComment(author, content)
 
     fun deleteComment(post: Post, postComment: PostComment): Boolean = post.deleteComment(postComment)
 

@@ -2,6 +2,7 @@ package com.back.domain.post.postComment.controller
 
 import com.back.domain.post.post.service.PostService
 import com.back.domain.post.postComment.dto.PostCommentDto
+import com.back.domain.post.postUser.entity.PostUser
 import com.back.global.rq.Rq
 import com.back.global.rsData.RsData
 import com.back.standard.extensions.getOrThrow
@@ -22,6 +23,9 @@ class ApiV1PostCommentController(
     private val postService: PostService,
     private val rq: Rq
 ) {
+    val actor: PostUser
+        get() = PostUser(rq.actor)
+
     @GetMapping
     @Transactional(readOnly = true)
     @Operation(summary = "다건 조회")
@@ -54,8 +58,6 @@ class ApiV1PostCommentController(
         @PathVariable postId: Int,
         @PathVariable id: Int
     ): RsData<Void> {
-        val actor = rq.actor
-
         val post = postService.findById(postId).getOrThrow()
         val postComment = post.findCommentById(id).getOrThrow()
 
@@ -82,8 +84,6 @@ class ApiV1PostCommentController(
         @PathVariable id: Int,
         @RequestBody @Valid reqBody: PostCommentModifyReqBody
     ): RsData<Void> {
-        val actor = rq.actor
-
         val post = postService.findById(postId).getOrThrow()
         val postComment = post.findCommentById(id).getOrThrow()
 
@@ -109,8 +109,6 @@ class ApiV1PostCommentController(
         @PathVariable postId: Int,
         @RequestBody @Valid reqBody: PostCommentWriteReqBody
     ): RsData<PostCommentDto> {
-        val actor = rq.actor
-
         val post = postService.findById(postId).getOrThrow()
         val postComment = postService.writeComment(actor, post, reqBody.content)
 

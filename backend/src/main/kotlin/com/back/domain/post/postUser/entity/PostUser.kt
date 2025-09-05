@@ -1,6 +1,7 @@
 package com.back.domain.post.postUser.entity
 
 import com.back.domain.member.member.entity.BaseMember
+import com.back.domain.member.member.entity.Member
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Table
@@ -18,7 +19,12 @@ class PostUser(
     id: Int,
     username: String,
     @field:Column(name = "NICKNAME") var name: String, // NICKNAME 필드를 name 이라는 다른 필드명으로 사용 가능
-    profileImgUrl: String?,
-    var postCount: Int, // PostUser 에만 추가된 필드
+    profileImgUrl: String?
 ) : BaseMember(id, username, profileImgUrl) {
+    constructor(member: Member) : this(
+        member.id,
+        member.username,
+        member.name,
+        member.profileImgUrl
+    )
 }

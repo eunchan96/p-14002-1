@@ -2,6 +2,7 @@ package com.back.global.initData
 
 import com.back.domain.member.member.service.MemberService
 import com.back.domain.post.post.service.PostService
+import com.back.domain.post.postUser.service.PostUserService
 import com.back.global.app.CustomConfigProperties
 import com.back.standard.extensions.getOrThrow
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional
 class NotProdInitData(
     private val memberService: MemberService,
     private val postService: PostService,
+    private val postUserService: PostUserService,
     private val customConfigProperties: CustomConfigProperties
 ) {
     @Autowired
@@ -70,9 +72,9 @@ class NotProdInitData(
     fun work2() {
         if (postService.count() > 0) return
 
-        val memberUser1 = memberService.findByUsername("user1").getOrThrow()
-        val memberUser2 = memberService.findByUsername("user2").getOrThrow()
-        val memberUser3 = memberService.findByUsername("user3").getOrThrow()
+        val memberUser1 = postUserService.findByUsername("user1").getOrThrow()
+        val memberUser2 = postUserService.findByUsername("user2").getOrThrow()
+        val memberUser3 = postUserService.findByUsername("user3").getOrThrow()
 
         val post1 = postService.write(memberUser1, "제목 1", "내용 1")
         val post2 = postService.write(memberUser1, "제목 2", "내용 2")
@@ -89,12 +91,12 @@ class NotProdInitData(
     fun work3() {
         if (postService.count() > 0) return
 
-        val memberUser1 = memberService.findByUsername("user1").getOrThrow()
-        val memberUser2 = memberService.findByUsername("user2").getOrThrow()
-        val memberUser3 = memberService.findByUsername("user3").getOrThrow()
-        val memberUser4 = memberService.findByUsername("user4").getOrThrow()
-        val memberUser5 = memberService.findByUsername("user5").getOrThrow()
-        val memberUser6 = memberService.findByUsername("user6").getOrThrow()
+        val memberUser1 = postUserService.findByUsername("user1").getOrThrow()
+        val memberUser2 = postUserService.findByUsername("user2").getOrThrow()
+        val memberUser3 = postUserService.findByUsername("user3").getOrThrow()
+        val memberUser4 = postUserService.findByUsername("user4").getOrThrow()
+        val memberUser5 = postUserService.findByUsername("user5").getOrThrow()
+        val memberUser6 = postUserService.findByUsername("user6").getOrThrow()
 
         val post1 = postService.write(
             memberUser1,
