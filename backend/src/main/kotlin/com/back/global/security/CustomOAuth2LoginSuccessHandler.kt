@@ -19,7 +19,7 @@ class CustomOAuth2LoginSuccessHandler(
         response: HttpServletResponse?,
         authentication: Authentication?
     ) {
-        val actor = rq.actorFromDb
+        val actor = rq.actor
 
         val accessToken = memberService.genAccessToken(actor)
 

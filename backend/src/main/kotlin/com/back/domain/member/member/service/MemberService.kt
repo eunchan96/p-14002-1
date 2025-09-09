@@ -82,4 +82,6 @@ class MemberService(
         val pageable = PageRequest.of(page - 1, pageSize, sort.sortBy)
         return memberRepository.findByKeyword(keywordType, keyword, pageable)
     }
+
+    fun getReferenceById(id: Int): Member = memberRepository.getReferenceById(id)
 }

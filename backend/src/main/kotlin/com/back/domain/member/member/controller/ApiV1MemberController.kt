@@ -116,7 +116,7 @@ class ApiV1MemberController(
     @Transactional(readOnly = true)
     @Operation(summary = "내 정보")
     fun me(): MemberWithUsernameDto {
-        val actor = rq.actorFromDb
+        val actor = rq.actor
 
         return MemberWithUsernameDto(actor)
     }

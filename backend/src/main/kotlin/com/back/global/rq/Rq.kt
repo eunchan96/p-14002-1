@@ -1,9 +1,9 @@
 package com.back.global.rq
 
 import com.back.domain.member.member.entity.Member
+import com.back.domain.member.member.entity.MemberProxy
 import com.back.domain.member.member.service.MemberService
 import com.back.global.security.SecurityUser
-import com.back.standard.extensions.getOrThrow
 import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -23,15 +23,17 @@ class Rq (
             ?.principal
             ?.let {
                 if (it is SecurityUser) {
-                    Member(it.id, it.username, it.nickname)
+                    MemberProxy(
+                        it.id,
+                        it.username,
+                        it.nickname,
+                        memberService.getReferenceById(it.id)
+                    )
                 } else {
                     null
                 }
             }
             ?: throw IllegalStateException("로그인 상태가 아닙니다.")
-
-    val actorFromDb: Member
-        get() = memberService.findById(actor.id).getOrThrow()
 
     fun getHeader(name: String, defaultValue: String): String = req.getHeader(name) ?: defaultValue
 
