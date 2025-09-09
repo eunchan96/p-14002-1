@@ -9,6 +9,7 @@ import com.back.standard.util.Ut.json.toString
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import org.springframework.http.HttpHeaders
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
@@ -88,11 +89,11 @@ class CustomAuthenticationFilter(
     }
 
     private fun extractTokens(): Pair<String, String> {
-        val headerAuthorization = rq.getHeader("Authorization", "")
+        val headerAuthorization = rq.getHeader(HttpHeaders.AUTHORIZATION, "")
 
         return if (headerAuthorization.isNotBlank()) {
             require(headerAuthorization.startsWith("Bearer ")) {
-                throw ServiceException("401-2", "Authorization 헤더가 Bearer 형식이 아닙니다.")
+                throw ServiceException("401-2", "${HttpHeaders.AUTHORIZATION} 헤더가 Bearer 형식이 아닙니다.")
             }
 
             val headerAuthorBits = headerAuthorization.split(' ', limit = 3)
@@ -128,7 +129,7 @@ class CustomAuthenticationFilter(
         val newToken = memberService.genAccessToken(member)
 
         rq.setCookie("accessToken", newToken)
-        rq.setHeader("Authorization", newToken)
+        rq.setHeader(HttpHeaders.AUTHORIZATION, newToken)
     }
 
     private fun authenticate(member: Member) {

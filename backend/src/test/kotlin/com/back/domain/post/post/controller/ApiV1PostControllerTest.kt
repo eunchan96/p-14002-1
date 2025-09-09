@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.security.test.context.support.WithUserDetails
 import org.springframework.test.context.ActiveProfiles
@@ -88,7 +89,7 @@ class ApiV1PostControllerTest {
         val resultActions = mvc
             .perform(
                 MockMvcRequestBuilders.post("/api/v1/posts")
-                    .header("Authorization", "Bearer wrong-api-key $actorAccessToken")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer wrong-api-key $actorAccessToken")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(
                         """
@@ -277,7 +278,7 @@ class ApiV1PostControllerTest {
             .perform(
                 MockMvcRequestBuilders.post("/api/v1/posts")
                     .contentType(MediaType.APPLICATION_JSON)
-                    .header("Authorization", "Bearer wrong-api-key")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer wrong-api-key")
                     .content(
                         """
                                         {
@@ -340,7 +341,7 @@ class ApiV1PostControllerTest {
         val resultActions = mvc
             .perform(
                 MockMvcRequestBuilders.put("/api/v1/posts/${id}")
-                    .header("Authorization", "Bearer $actorApiKey")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer $actorApiKey")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(
                         """
@@ -396,7 +397,7 @@ class ApiV1PostControllerTest {
         val resultActions = mvc
             .perform(
                 MockMvcRequestBuilders.delete("/api/v1/posts/${id}")
-                    .header("Authorization", "Bearer $actorApiKey")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer $actorApiKey")
             )
             .andDo(MockMvcResultHandlers.print())
 
