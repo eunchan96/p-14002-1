@@ -71,7 +71,7 @@ class MemberRepositoryTest {
             1,
             "system",
             "시스템",
-            realMember
+            real = realMember
         )
 
         // fulfill 필요없음

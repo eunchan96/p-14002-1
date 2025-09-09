@@ -27,7 +27,7 @@ class Rq (
                         it.id,
                         it.username,
                         it.nickname,
-                        memberService.getReferenceById(it.id)
+                        real = memberService.getReferenceById(it.id)
                     )
                 } else {
                     null

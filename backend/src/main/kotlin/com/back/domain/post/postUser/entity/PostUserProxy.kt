@@ -1,19 +1,19 @@
-package com.back.domain.member.member.entity
+package com.back.domain.post.postUser.entity
 
 import java.time.LocalDateTime
 
-class MemberProxy(
+class PostUserProxy(
     id: Int,
     username: String,
-    nickname: String,
+    name: String,
     profileImgUrl: String? = null,
-    private val real: Member
-) : Member(id, username, nickname, profileImgUrl) {
-    override var nickname: String
-        get() = super.nickname
+    private val real: PostUser
+) : PostUser(id, username, name, profileImgUrl) {
+    override var name: String
+        get() = super.name
         set(value) {
-            super.nickname = value
-            real.nickname = value
+            super.name = value
+            real.name = value
         }
 
     override var createDate: LocalDateTime
@@ -34,15 +34,15 @@ class MemberProxy(
             real.profileImgUrl = value
         }
 
-    override var apiKey: String
-        get() = real.apiKey
+    override var postsCount: Int
+        get() = real.postsCount
         set(value) {
-            real.apiKey = value
+            real.postsCount = value
         }
 
-    override var password: String?
-        get() = real.password
+    override var postCommentsCount: Int
+        get() = real.postCommentsCount
         set(value) {
-            real.password = value
+            real.postCommentsCount = value
         }
 }
