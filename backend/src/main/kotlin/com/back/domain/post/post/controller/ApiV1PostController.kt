@@ -30,7 +30,7 @@ class ApiV1PostController(
     private val rq: Rq
 ) {
     val actor: PostUser
-        get() = PostUser(rq.actor)
+        get() = rq.postActor
 
     @GetMapping
     @Operation(summary = "다건 조회")

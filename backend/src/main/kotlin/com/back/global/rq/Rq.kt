@@ -3,6 +3,9 @@ package com.back.global.rq
 import com.back.domain.member.member.entity.Member
 import com.back.domain.member.member.entity.MemberProxy
 import com.back.domain.member.member.service.MemberService
+import com.back.domain.post.postUser.entity.PostUser
+import com.back.domain.post.postUser.entity.PostUserProxy
+import com.back.domain.post.postUser.service.PostUserService
 import com.back.global.security.SecurityUser
 import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
@@ -14,7 +17,8 @@ import org.springframework.stereotype.Component
 class Rq (
     private val req: HttpServletRequest,
     private val resp: HttpServletResponse,
-    private val memberService: MemberService
+    private val memberService: MemberService,
+    private val postUserService: PostUserService
 ) {
     val actor: Member
         get() = SecurityContextHolder
@@ -34,6 +38,25 @@ class Rq (
                 }
             }
             ?: throw IllegalStateException("로그인 상태가 아닙니다.")
+
+    val postActor: PostUser
+        get() = SecurityContextHolder
+            .getContext()
+            ?.authentication
+            ?.principal
+            ?.let {
+                if (it is SecurityUser) {
+                    PostUserProxy(
+                        it.id,
+                        it.username,
+                        it.nickname,
+                        real = postUserService.getReferenceById(it.id)
+                    )
+                } else {
+                    null
+                }
+            }
+            ?: throw IllegalStateException("인증된 사용자가 없습니다.")
 
     fun getHeader(name: String, defaultValue: String): String = req.getHeader(name) ?: defaultValue
 

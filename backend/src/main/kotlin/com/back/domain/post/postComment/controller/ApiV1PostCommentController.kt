@@ -26,7 +26,7 @@ class ApiV1PostCommentController(
     private val postUserService: PostUserService
 ) {
     val actor: PostUser
-        get() = PostUser(rq.actor)
+        get() = rq.postActor
 
     @GetMapping
     @Transactional(readOnly = true)
@@ -111,8 +111,6 @@ class ApiV1PostCommentController(
         @PathVariable postId: Int,
         @RequestBody @Valid reqBody: PostCommentWriteReqBody
     ): RsData<PostCommentDto> {
-        val actor = postUserService.findByUsername(actor.username).getOrThrow() // 엑세스토큰에 들어있는 정보만으로는 부족해서 DB 조회
-
         val post = postService.findById(postId).getOrThrow()
         val postComment = postService.writeComment(actor, post, reqBody.content)
 
