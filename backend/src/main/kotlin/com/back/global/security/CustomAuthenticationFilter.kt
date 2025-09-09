@@ -39,15 +39,21 @@ class CustomAuthenticationFilter(
         }
     }
 
-    private fun processRequest(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
-        // API 요청이 아니라면 패스
-        if (!request.requestURI.startsWith("/api/")) {
-            filterChain.doFilter(request, response)
-            return
-        }
+    private val publicApiPaths = setOf(
+        "/api/v1/members/login",
+        "/api/v1/members/logout",
+        "/api/v1/members/join",
+    )
 
-        // 인증, 인가가 필요없는 API 요청이라면 패스
-        if (request.requestURI in listOf("/api/v1/members/login", "/api/v1/members/logout", "/api/v1/members/join")) {
+    private fun isApiRequest(request: HttpServletRequest): Boolean =
+        request.requestURI.startsWith("/api/")
+
+    private fun isPublicApi(request: HttpServletRequest): Boolean =
+        request.requestURI in publicApiPaths
+
+    private fun processRequest(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
+        // API 요청이 아니거나 인증, 인가가 필요없는 API 요청이라면 패스
+        if (!isApiRequest(request) || isPublicApi(request)) {
             filterChain.doFilter(request, response)
             return
         }
@@ -67,29 +73,10 @@ class CustomAuthenticationFilter(
         val (member, isAccessTokenValid) = getAuthenticatedMember(apiKey, accessToken)
 
         if (isAccessTokenExists && !isAccessTokenValid) {
-            val actorAccessToken = memberService.genAccessToken(member)
-
-            rq.setCookie("accessToken", actorAccessToken)
-            rq.setHeader("Authorization", actorAccessToken)
+            refreshAccessToken(member)
         }
 
-        val user: UserDetails = SecurityUser(
-            member.id,
-            member.username,
-            "",
-            member.name,
-            member.authorities
-        )
-
-        val authentication: Authentication = UsernamePasswordAuthenticationToken(
-            user,
-            user.password,
-            user.authorities
-        )
-
-        // 이 시점 이후부터는 시큐리티가 이 요청을 인증된 사용자의 요청이다.
-        SecurityContextHolder
-            .getContext().authentication = authentication
+        authenticate(member)
 
         filterChain.doFilter(request, response)
     }
@@ -129,5 +116,32 @@ class CustomAuthenticationFilter(
             ?: throw ServiceException("401-3", "API 키가 유효하지 않습니다.")
 
         return member to isAccessTokenValid
+    }
+
+    private fun refreshAccessToken(member: Member) {
+        val newToken = memberService.genAccessToken(member)
+
+        rq.setCookie("accessToken", newToken)
+        rq.setHeader("Authorization", newToken)
+    }
+
+    private fun authenticate(member: Member) {
+        val user: UserDetails = SecurityUser(
+            member.id,
+            member.username,
+            "",
+            member.name,
+            member.authorities
+        )
+
+        val authentication: Authentication = UsernamePasswordAuthenticationToken(
+            user,
+            user.password,
+            user.authorities
+        )
+
+        // 이 시점 이후부터는 시큐리티가 이 요청을 인증된 사용자의 요청이다.
+        SecurityContextHolder
+            .getContext().authentication = authentication
     }
 }
