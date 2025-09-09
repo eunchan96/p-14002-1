@@ -1,5 +1,6 @@
 package com.back.domain.member.member.entity
 
+import com.back.global.jpa.entity.BaseEntity
 import com.back.global.jpa.entity.BaseTime
 import jakarta.persistence.Column
 import jakarta.persistence.MappedSuperclass
@@ -31,7 +32,7 @@ abstract class BaseMember(
         get() = this.authoritiesAsStringList
             .map { SimpleGrantedAuthority(it) }
 
-    private val authoritiesAsStringList: List<String>
+    val authoritiesAsStringList: List<String>
         get() {
             val authorities = mutableListOf<String>()
 
@@ -39,4 +40,11 @@ abstract class BaseMember(
 
             return authorities
         }
+
+    override fun equals(other: Any?): Boolean {
+        if (other === this) return true
+        if (other == null || other !is BaseMember) return false
+        val that = other as BaseEntity
+        return id == that.id
+    }
 }

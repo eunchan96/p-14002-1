@@ -13,8 +13,8 @@ class Member(
     @field:Column(unique = true) var apiKey: String,
     profileImgUrl: String? = null
 ) : BaseMember(id, username, profileImgUrl) {
-    constructor(id: Int, username: String, nickname: String) : this(
-        id, username, "", nickname, "", null
+    constructor(id: Int, username: String, nickname: String, profileImgUrl: String? = null) : this(
+        id, username, "", nickname, "", profileImgUrl
     )
 
     constructor(username: String, password: String?, nickname: String, profileImgUrl: String?) : this (
