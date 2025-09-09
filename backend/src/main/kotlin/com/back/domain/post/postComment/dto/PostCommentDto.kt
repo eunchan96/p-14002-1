@@ -9,6 +9,7 @@ class PostCommentDto private constructor(
     val modifyDate: LocalDateTime,
     val authorId: Int,
     val authorName: String,
+    val authorProfileImageUrl: String,
     val postId: Int,
     val content: String
 ) {
@@ -18,6 +19,7 @@ class PostCommentDto private constructor(
         modifyDate = postComment.modifyDate,
         authorId = postComment.author.id,
         authorName = postComment.author.name,
+        authorProfileImageUrl = postComment.author.redirectToProfileImgUrlOrDefault,
         postId = postComment.post.id,
         content = postComment.content
     )

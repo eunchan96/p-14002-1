@@ -17,6 +17,6 @@ data class MemberDto(
         modifyDate = member.modifyDate,
         name = member.name,
         isAdmin = member.isAdmin,
-        profileImageUrl = member.profileImgUrlOrDefault
+        profileImageUrl = member.redirectToProfileImgUrlOrDefault
     )
 }

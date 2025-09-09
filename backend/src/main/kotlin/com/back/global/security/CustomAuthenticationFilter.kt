@@ -45,11 +45,17 @@ class CustomAuthenticationFilter(
         "/api/v1/members/join",
     )
 
+    private val publicApiPatterns = listOf(
+        Regex("/api/v1/members/\\d+/redirectToProfileImg")
+    )
+
     private fun isApiRequest(request: HttpServletRequest): Boolean =
         request.requestURI.startsWith("/api/")
 
-    private fun isPublicApi(request: HttpServletRequest): Boolean =
-        request.requestURI in publicApiPaths
+    private fun isPublicApi(request: HttpServletRequest): Boolean {
+        val uri = request.requestURI
+        return uri in publicApiPaths || publicApiPatterns.any { it.matches(uri) }
+    }
 
     private fun processRequest(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
         // API 요청이 아니거나 인증, 인가가 필요없는 API 요청이라면 패스

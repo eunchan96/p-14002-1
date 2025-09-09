@@ -19,6 +19,6 @@ data class MemberWithUsernameDto(
         name = member.name,
         username = member.username,
         isAdmin = member.isAdmin,
-        profileImageUrl = member.profileImgUrlOrDefault
+        profileImageUrl = member.redirectToProfileImgUrlOrDefault
     )
 }

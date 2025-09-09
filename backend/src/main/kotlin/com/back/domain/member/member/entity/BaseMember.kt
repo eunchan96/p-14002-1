@@ -18,6 +18,9 @@ abstract class BaseMember(
             return profileImgUrl ?: "https://placehold.co/600x600?text=U_U"
         }
 
+    val redirectToProfileImgUrlOrDefault: String
+        get() = "/api/v1/members/${id}/redirectToProfileImg"
+
     val isAdmin: Boolean
         get() = when (username) {
             "system", "admin" -> true

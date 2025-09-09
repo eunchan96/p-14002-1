@@ -17,7 +17,7 @@ data class PostUserDto(
         postUser.createDate,
         postUser.modifyDate,
         postUser.name,
-        postUser.profileImgUrlOrDefault,
+        postUser.redirectToProfileImgUrlOrDefault,
         postUser.postsCount,
         postUser.postCommentsCount
     )
