@@ -1,5 +1,6 @@
 package com.back.domain.member.member.entity
 
+import com.back.domain.member.member.repository.MemberAttrRepository
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import java.util.*
@@ -13,6 +14,10 @@ class Member(
     @field:Column(unique = true) var apiKey: String,
     profileImgUrl: String? = null
 ) : BaseMember(id, username, profileImgUrl) {
+    companion object {
+        lateinit var attrRepository: MemberAttrRepository
+    }
+
     constructor(id: Int, username: String, nickname: String, profileImgUrl: String? = null) : this(
         id, username, "", nickname, "", profileImgUrl
     )
