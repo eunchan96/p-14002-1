@@ -21,14 +21,12 @@ import org.springframework.data.annotation.Immutable
 class PostUser(
     id: Int,
     username: String,
-    @field:Column(name = "NICKNAME") var name: String, // NICKNAME 필드를 name 이라는 다른 필드명으로 사용 가능
-    profileImgUrl: String? = null,
-) : BaseMember(id, username, profileImgUrl) {
+    @field:Column(name = "NICKNAME") var name: String,
+) : BaseMember(id, username) {
     constructor(member: Member) : this(
         member.id,
         member.username,
-        member.name,
-        member.profileImgUrl
+        member.name
     )
 
     // 코프링에서 엔티티에 `by lazy` 필드가 제대로 작동하게 하려면

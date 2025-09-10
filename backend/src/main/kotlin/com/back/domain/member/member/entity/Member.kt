@@ -12,18 +12,19 @@ class Member(
     var password: String? = null,
     var nickname: String,
     @field:Column(unique = true) var apiKey: String,
-    profileImgUrl: String? = null
-) : BaseMember(id, username, profileImgUrl) {
+) : BaseMember(id, username) {
     companion object {
         lateinit var attrRepository: MemberAttrRepository
     }
 
-    constructor(id: Int, username: String, nickname: String, profileImgUrl: String? = null) : this(
-        id, username, "", nickname, "", profileImgUrl
+    constructor() : this(0)
+
+    constructor(id: Int, username: String, nickname: String) : this(
+        id, username, "", nickname, ""
     )
 
-    constructor(username: String, password: String?, nickname: String, profileImgUrl: String?) : this (
-        0, username, password, nickname, UUID.randomUUID().toString(), profileImgUrl
+    constructor(username: String, password: String?, nickname: String) : this (
+        0, username, password, nickname, UUID.randomUUID().toString()
     )
 
     constructor(id: Int) : this(id, "", "")
@@ -35,8 +36,8 @@ class Member(
         this.apiKey = apiKey
     }
 
-    fun modify(nickname: String, profileImgUrl: String) {
+    fun modify(nickname: String, profileImgUrl: String?) {
         this.nickname = nickname
-        this.profileImgUrl = profileImgUrl
+        profileImgUrl?.let { this.profileImgUrl = it }
     }
 }

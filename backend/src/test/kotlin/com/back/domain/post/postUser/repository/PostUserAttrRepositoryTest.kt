@@ -54,7 +54,7 @@ class PostUserAttrRepositoryTest {
             1,
             "system",
             "시스템",
-            real = realPostUser
+            realPostUser
         )
 
         // fulfill 필요없음
@@ -68,10 +68,10 @@ class PostUserAttrRepositoryTest {
         assertThat(postUser).isEqualTo(realPostUser)
 
         // fulfill 필요함
-        assertThat(postUser.createDate).isNotNull()
-        assertThat(postUser.modifyDate).isNotNull()
-        assertThat(postUser.profileImgUrl).isNull()
-        assertThat(postUser.postsCount).isNotNull()
-        assertThat(postUser.postCommentsCount).isNotNull()
+        assertThat(postUser.createDate).isNotNull
+        assertThat(postUser.modifyDate).isNotNull
+        assertThat(postUser.profileImgUrl).isBlank
+        assertThat(postUser.postsCount).isNotNull
+        assertThat(postUser.postCommentsCount).isNotNull
     }
 }

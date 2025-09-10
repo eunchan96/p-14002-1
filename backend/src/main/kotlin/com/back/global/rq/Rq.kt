@@ -31,7 +31,7 @@ class Rq (
                         it.id,
                         it.username,
                         it.nickname,
-                        real = memberService.getReferenceById(it.id)
+                        memberService.getReferenceById(it.id)
                     )
                 } else {
                     null
@@ -50,7 +50,7 @@ class Rq (
                         it.id,
                         it.username,
                         it.nickname,
-                        real = postUserService.getReferenceById(it.id)
+                        postUserService.getReferenceById(it.id)
                     )
                 } else {
                     null

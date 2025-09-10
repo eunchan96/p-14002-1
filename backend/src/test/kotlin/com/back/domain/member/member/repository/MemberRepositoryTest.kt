@@ -71,7 +71,7 @@ class MemberRepositoryTest {
             1,
             "system",
             "시스템",
-            real = realMember
+            realMember
         )
 
         // fulfill 필요없음
@@ -86,10 +86,10 @@ class MemberRepositoryTest {
         assertThat(member).isEqualTo(realMember)
 
         // fulfill 필요함
-        assertThat(member.createDate).isNotNull()
-        assertThat(member.modifyDate).isNotNull()
-        assertThat(member.profileImgUrl).isNull()
-        assertThat(member.apiKey).isNotNull()
-        assertThat(member.password).isNotNull()
+        assertThat(member.createDate).isNotNull
+        assertThat(member.modifyDate).isNotNull
+        assertThat(member.profileImgUrl).isBlank
+        assertThat(member.apiKey).isNotNull
+        assertThat(member.password).isNotNull
     }
 }

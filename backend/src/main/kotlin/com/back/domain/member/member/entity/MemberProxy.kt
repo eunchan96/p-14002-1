@@ -6,9 +6,8 @@ class MemberProxy(
     id: Int,
     username: String,
     nickname: String,
-    profileImgUrl: String? = null,
     private val real: Member
-) : Member(id, username, nickname, profileImgUrl) {
+) : Member(id, username, nickname) {
     override var nickname: String
         get() = super.nickname
         set(value) {
@@ -28,7 +27,7 @@ class MemberProxy(
             real.modifyDate = value
         }
 
-    override var profileImgUrl: String?
+    override var profileImgUrl: String
         get() = real.profileImgUrl
         set(value) {
             real.profileImgUrl = value

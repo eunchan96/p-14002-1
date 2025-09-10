@@ -28,14 +28,12 @@ class MemberService(
                 throw ServiceException("409-1", "이미 존재하는 아이디입니다.")
             }
 
-        val member = Member(
-            username,
-            password?.takeIf { it.isNotBlank() }?.let { passwordEncoder.encode(it) },
-            nickname,
-            profileImgUrl
-        )
+        val encodedPassword = if (!password.isNullOrBlank()) passwordEncoder.encode(password) else null
 
-        return memberRepository.save<Member>(member)
+        val member = memberRepository.save(Member(username, encodedPassword, nickname))
+        profileImgUrl?.let { member.profileImgUrl = it }
+
+        return member
     }
 
     fun findByUsername(username: String): Member? = memberRepository.findByUsername(username)

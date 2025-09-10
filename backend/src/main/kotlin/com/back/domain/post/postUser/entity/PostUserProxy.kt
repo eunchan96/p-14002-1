@@ -6,9 +6,8 @@ class PostUserProxy(
     id: Int,
     username: String,
     name: String,
-    profileImgUrl: String? = null,
     private val real: PostUser
-) : PostUser(id, username, name, profileImgUrl) {
+) : PostUser(id, username, name) {
     override var name: String
         get() = super.name
         set(value) {
@@ -28,7 +27,7 @@ class PostUserProxy(
             real.modifyDate = value
         }
 
-    override var profileImgUrl: String?
+    override var profileImgUrl: String
         get() = real.profileImgUrl
         set(value) {
             real.profileImgUrl = value
