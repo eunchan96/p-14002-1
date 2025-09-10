@@ -8,12 +8,14 @@ import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.core.Authentication
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 
 @Component
 class CustomOAuth2LoginSuccessHandler(
     private val memberService: MemberService,
     private val rq: Rq
 ) : AuthenticationSuccessHandler {
+    @Transactional(readOnly = true)
     override fun onAuthenticationSuccess(
         request: HttpServletRequest,
         response: HttpServletResponse?,
