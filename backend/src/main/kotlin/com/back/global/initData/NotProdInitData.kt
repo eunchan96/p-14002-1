@@ -1,10 +1,12 @@
 package com.back.global.initData
 
 import com.back.domain.member.member.service.MemberService
+import com.back.domain.post.genFile.entity.PostGenFile
 import com.back.domain.post.post.service.PostService
 import com.back.domain.post.postUser.service.PostUserService
 import com.back.global.app.CustomConfigProperties
 import com.back.standard.extensions.getOrThrow
+import com.back.standard.sampleResource.SampleResource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
@@ -176,5 +178,45 @@ class NotProdInitData(
                 "테스트 게시물 $i 내용"
             )
         }
+
+        val genFile1FilePath = SampleResource.IMG_GIF_SAMPLE1.makeCopy()
+        post9.addGenFile(PostGenFile.TypeCode.attachment, filePath = genFile1FilePath)
+
+        var genFile2FilePath = SampleResource.IMG_JPG_SAMPLE1.makeCopy()
+        post9.addGenFile(PostGenFile.TypeCode.attachment, filePath = genFile2FilePath)
+        post9.deleteGenFile(PostGenFile.TypeCode.attachment, 2)
+
+        genFile2FilePath = SampleResource.IMG_JPG_SAMPLE2.makeCopy()
+        post9.putGenFile(PostGenFile.TypeCode.attachment, 3, filePath = genFile2FilePath)
+
+        val genFile3FilePath = SampleResource.IMG_JPG_SAMPLE3.makeCopy()
+        post9.addGenFile(PostGenFile.TypeCode.thumbnail, filePath = genFile3FilePath)
+
+        val newGenFile3FilePath = SampleResource.IMG_JPG_SAMPLE4.makeCopy()
+        val postGenFile3 = post9.modifyGenFile(PostGenFile.TypeCode.thumbnail, 1, newGenFile3FilePath)
+
+        post9.thumbnailGenFile = postGenFile3
+
+
+        val genFile4FilePath = SampleResource.IMG_WEBP_SAMPLE1.makeCopy()
+        post10.addGenFile(PostGenFile.TypeCode.attachment, filePath = genFile4FilePath)
+
+        val genFile5FilePath = SampleResource.AUDIO_M4A_SAMPLE1.makeCopy()
+        post10.addGenFile(PostGenFile.TypeCode.attachment, filePath = genFile5FilePath)
+
+        val genFile6FilePath = SampleResource.AUDIO_MP3_SAMPLE1.makeCopy()
+        post10.addGenFile(PostGenFile.TypeCode.attachment, filePath = genFile6FilePath)
+
+        val genFile7FilePath = SampleResource.AUDIO_MP3_SAMPLE2.makeCopy()
+        post10.addGenFile(PostGenFile.TypeCode.attachment, filePath = genFile7FilePath)
+
+        val genFile8FilePath = SampleResource.VIDEO_MOV_SAMPLE1.makeCopy()
+        post10.addGenFile(PostGenFile.TypeCode.attachment, filePath = genFile8FilePath)
+
+        val genFile9FilePath = SampleResource.VIDEO_MP4_SAMPLE1.makeCopy()
+        post10.addGenFile(PostGenFile.TypeCode.attachment, filePath = genFile9FilePath)
+
+        val genFile10FilePath = SampleResource.VIDEO_MP4_SAMPLE2.makeCopy()
+        post10.addGenFile(PostGenFile.TypeCode.attachment, filePath = genFile10FilePath)
     }
 }

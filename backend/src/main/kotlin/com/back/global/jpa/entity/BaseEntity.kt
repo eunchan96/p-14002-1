@@ -1,5 +1,6 @@
 package com.back.global.jpa.entity
 
+import com.back.standard.util.Ut
 import jakarta.persistence.*
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
 
@@ -10,6 +11,9 @@ abstract class BaseEntity(
     @field:GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int = 0
 ) {
+    val modelName: String
+        get() = Ut.str.lcfirst(this::class.simpleName!!)
+
     override fun equals(other: Any?): Boolean {
         if (other === this) return true
         if (other !is BaseTime) return false

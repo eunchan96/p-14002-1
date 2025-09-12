@@ -33,6 +33,8 @@ class SecurityConfig(
                 authorize(HttpMethod.GET, "/api/*/posts", permitAll)
                 authorize(HttpMethod.GET, "/api/*/posts/{postId:\\d+}/comments", permitAll)
                 authorize(HttpMethod.GET, "/api/*/posts/{postId:\\d+}/comments/{id:\\d+}", permitAll)
+                authorize(HttpMethod.GET, "/api/*/posts/{postId:\\d+}/genFiles", permitAll)
+                authorize(HttpMethod.GET, "/api/*/posts/{postId:\\d+}/genFiles/{id:\\d+}", permitAll)
                 authorize("/api/*/members/login", permitAll)
                 authorize("/api/*/members/logout", permitAll)
                 authorize(HttpMethod.POST, "/api/*/members", permitAll)

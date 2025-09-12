@@ -116,3 +116,5 @@ custom:
       apiKey: naver__1
       nickname: 은찬
       profileImgUrl: https://ssl.pstatic.net/static/pwe/address/img_profile.png
+  genFile:
+    dirPath: c:/temp/genFile
