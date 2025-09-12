@@ -112,6 +112,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/members/{id}/redirectToProfileImg": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 프로필 이미지 리다이렉트 */
+        get: operations["redirectToProfileImg"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/members/me": {
         parameters: {
             query?: never;
@@ -227,6 +244,7 @@ export interface components {
             /** Format: int32 */
             authorId: number;
             authorName: string;
+            authorProfileImageUrl: string;
             title: string;
         };
         RsDataPostDto: {
@@ -247,6 +265,7 @@ export interface components {
             /** Format: int32 */
             authorId: number;
             authorName: string;
+            authorProfileImageUrl: string;
             /** Format: int32 */
             postId: number;
             content: string;
@@ -292,7 +311,7 @@ export interface components {
             data: components["schemas"]["MemberLoginResBody"];
         };
         PageDtoPostDto: {
-            items: components["schemas"]["PostDto"][];
+            content: components["schemas"]["PostDto"][];
             pageable: components["schemas"]["PageableDto"];
         };
         PageableDto: {
@@ -340,7 +359,7 @@ export interface components {
             all: number;
         };
         PageDtoMemberWithUsernameDto: {
-            items: components["schemas"]["MemberWithUsernameDto"][];
+            content: components["schemas"]["MemberWithUsernameDto"][];
             pageable: components["schemas"]["PageableDto"];
         };
     };
@@ -552,10 +571,11 @@ export interface operations {
     items: {
         parameters: {
             query?: {
-                keywordType?: "ALL" | "TITLE" | "CONTENT" | "AUTHOR";
+                keywordType?: "ALL" | "TITLE" | "CONTENT" | "AUTHOR_NAME";
                 keyword?: string;
                 page?: number;
                 pageSize?: number;
+                sort?: "ID" | "ID_ASC" | "TITLE" | "TITLE_ASC" | "AUTHOR_NAME" | "AUTHOR_NAME_ASC" | "CREATED_AT" | "CREATED_AT_ASC";
             };
             header?: never;
             path?: never;
@@ -748,6 +768,35 @@ export interface operations {
             };
         };
     };
+    redirectToProfileImg: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Found */
+            302: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json;charset=UTF-8": components["schemas"]["RsDataVoid"];
+                };
+            };
+        };
+    };
     me: {
         parameters: {
             query?: never;
@@ -813,6 +862,7 @@ export interface operations {
                 keyword?: string;
                 page?: number;
                 pageSize?: number;
+                sort?: "ID" | "ID_ASC" | "NICKNAME" | "NICKNAME_ASC" | "USERNAME" | "USERNAME_ASC" | "CREATED_AT" | "CREATED_AT_ASC";
             };
             header?: never;
             path?: never;
