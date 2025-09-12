@@ -2,6 +2,7 @@ package com.back.domain.post.postUser.repository
 
 import com.back.domain.post.postUser.entity.PostUserAttr
 import com.back.domain.post.postUser.entity.PostUserProxy
+import com.back.global.app.AppConfig
 import com.back.standard.extensions.getOrThrow
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
@@ -61,7 +62,7 @@ class PostUserAttrRepositoryTest {
         assertThat(postUser.id).isEqualTo(1)
         assertThat(postUser.username).isEqualTo("system")
         assertThat(postUser.name).isEqualTo("시스템")
-        assertThat(postUser.redirectToProfileImgUrlOrDefault).isEqualTo("/api/v1/members/1/redirectToProfileImg")
+        assertThat(postUser.redirectToProfileImgUrlOrDefault).isEqualTo("${AppConfig.siteBackUrl}/api/v1/members/1/redirectToProfileImg")
         assertThat(postUser.isAdmin).isTrue()
         assertThat(postUser.authorities).hasSize(1)
         assertThat(postUser.authoritiesAsStringList).containsExactly("ROLE_ADMIN")

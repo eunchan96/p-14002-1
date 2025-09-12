@@ -8,6 +8,7 @@ import com.back.domain.post.postUser.entity.PostUser
 import com.back.domain.post.postUser.repository.PostUserAttrRepository
 import com.back.standard.util.Ut
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.env.Environment
@@ -20,7 +21,10 @@ class AppConfig (
     objectMapper: ObjectMapper,
     memberAttrRepository: MemberAttrRepository,
     memberRepository: MemberRepository,
-    postUserAttrRepository: PostUserAttrRepository
+    postUserAttrRepository: PostUserAttrRepository,
+    @Value("\${custom.site.cookieDomain}") cookieDomain: String,
+    @Value("\${custom.site.frontUrl}") siteFrontUrl: String,
+    @Value("\${custom.site.backUrl}") siteBackUrl: String,
 ) {
     init {
         Companion.environment = environment
@@ -29,6 +33,10 @@ class AppConfig (
         BaseMember.memberRepository = memberRepository
         Member.attrRepository = memberAttrRepository
         PostUser.attrRepository = postUserAttrRepository
+
+        _cookieDomain = cookieDomain
+        _siteFrontUrl = siteFrontUrl
+        _siteBackUrl = siteBackUrl
     }
 
     @Bean
@@ -48,5 +56,13 @@ class AppConfig (
 
         val isNotProd: Boolean
             get() = !isProd
+
+        private lateinit var _cookieDomain: String
+        private lateinit var _siteFrontUrl: String
+        private lateinit var _siteBackUrl: String
+
+        val cookieDomain: String by lazy { _cookieDomain }
+        val siteFrontUrl: String by lazy { _siteFrontUrl }
+        val siteBackUrl: String by lazy { _siteBackUrl }
     }
 }

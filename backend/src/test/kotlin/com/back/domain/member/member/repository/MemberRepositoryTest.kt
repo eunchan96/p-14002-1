@@ -1,6 +1,7 @@
 package com.back.domain.member.member.repository
 
 import com.back.domain.member.member.entity.MemberProxy
+import com.back.global.app.AppConfig
 import com.back.standard.extensions.getOrThrow
 import com.back.standard.search.MemberSearchKeywordType
 import com.back.standard.search.MemberSearchSortType
@@ -79,7 +80,7 @@ class MemberRepositoryTest {
         assertThat(member.username).isEqualTo("system")
         assertThat(member.nickname).isEqualTo("시스템")
         assertThat(member.name).isEqualTo("시스템")
-        assertThat(member.redirectToProfileImgUrlOrDefault).isEqualTo("/api/v1/members/1/redirectToProfileImg")
+        assertThat(member.redirectToProfileImgUrlOrDefault).isEqualTo("${AppConfig.siteBackUrl}/api/v1/members/1/redirectToProfileImg")
         assertThat(member.isAdmin).isTrue()
         assertThat(member.authorities).hasSize(1)
         assertThat(member.authoritiesAsStringList).containsExactly("ROLE_ADMIN")
